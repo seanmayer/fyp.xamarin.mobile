@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FYP.Xamarin.Mobile.Signup">
+    <ContentPage.Content>
+        <Grid BackgroundColor="#3A4A64">
+            <Grid Margin="20,100,20,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+
+                <StackLayout >
+                    <Image Source="scp_signup.png" WidthRequest="206" HeightRequest="28" />
+                </StackLayout>
+
+                <Entry Grid.Row="1" x:Name="username" Placeholder="Username" PlaceholderColor="#A2A2A2" FontSize="16" />
+                <Entry Grid.Row="2" x:Name="password" Placeholder="Password" PlaceholderColor="#A2A2A2" FontSize="16" />
+                <Entry Grid.Row="3" x:Name="confirmPassword" Placeholder="Confirm Password" PlaceholderColor="#A2A2A2" FontSize="16" />
+                <Entry Grid.Row="4" x:Name="stravaId" Placeholder="Strava ID" PlaceholderColor="#A2A2A2" FontSize="16" Text="581409"/>
+                <Entry Grid.Row="5" x:Name="stravaApiKey" Placeholder="Strava API Key" Text="3aa96600c17636ee70c0fe95af4a28eeae20de32" PlaceholderColor="#A2A2A2" FontSize="16" />
+
+                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Grid.Row="7">
+                    <AbsoluteLayout>
+                        <Image Source="strava_btn.png" AbsoluteLayout.LayoutBounds="0.2,0.2,312,96" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+                        <Button AbsoluteLayout.LayoutBounds="0.2,0.2,312,86" AbsoluteLayout.LayoutFlags="PositionProportional" BorderColor="Transparent" BackgroundColor="Transparent" Clicked="ConnectToStrava_Clicked"/>
+                    </AbsoluteLayout>
+                </StackLayout>
+
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

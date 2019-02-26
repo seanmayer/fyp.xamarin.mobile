@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:FYP.Xamarin.Mobile"
+             x:Class="FYP.Xamarin.Mobile.MainPage">
+    <!-- xmlns:Renders="clr-namespace:FYP.Xamarin.Mobile.Droid.Renders"-->
+
+    <ContentPage.Content >
+        <!--  <Renders:GradientLayout ColorsList="#1F2D44,#3A4A64" Mode="ToLeft">-->
+        <Grid BackgroundColor="#3A4A64">
+            <Grid Margin="20,20,20,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+
+                <StackLayout >
+                    <Image Source="scp_logo.png" WidthRequest="127" HeightRequest="127"/>
+                    <Image Source="scp_title.png" WidthRequest="206" HeightRequest="28" />
+                </StackLayout>
+
+                <Entry Grid.Row="1" Placeholder="Username" PlaceholderColor="#A2A2A2" FontSize="16" />
+                <Entry Grid.Row="2" Placeholder="Password" PlaceholderColor="#A2A2A2" FontSize="16" />
+                <Button Text="LogIn" BackgroundColor="#0EBFD5" TextColor="White" HeightRequest="50" VerticalOptions="Start" Grid.Row="3" Clicked="Login_Clicked"/>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Grid.Row="5">
+                    <Label Text="Forgot Password?" TextColor="#A2A2A2"  />
+                </StackLayout>
+
+                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Grid.Row="6">
+                    <Label Text="Dont have an Account?" TextColor="#A2A2A2"  />
+                    <Button Text="SIGN UP" TextColor="#FFFFFF" BorderColor="Transparent" BackgroundColor="Transparent"  HeightRequest="50" VerticalOptions="Start" Grid.Row="3" Clicked="Signup_Clicked" />
+                </StackLayout>
+            </Grid>
+        </Grid>
+        <!--</Renders:GradientLayout> -->
+    </ContentPage.Content>
+
+</ContentPage>
