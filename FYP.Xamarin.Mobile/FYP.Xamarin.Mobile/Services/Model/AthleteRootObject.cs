@@ -7,14 +7,17 @@ namespace FYP.Xamarin.Mobile.Services.Model
 {
     public class AthleteRootObject
     {
-        public long AthleteId { get; set; }
+        public long athleteId { get; set; }
 
-        public Credentials Credentials { get; set; }
+        public string stravaId { get; set; }
 
-        public string StravaId { get; set; }
+        public string firstname { get; set; }
 
-        public string FirstName { get; set; }
+        public string lastname { get; set; }
 
-        public string LastName { get; set; }
+        public override string ToString()
+        {
+            return stravaId + " " + firstname + " " + lastname;
+        }
     }
 }

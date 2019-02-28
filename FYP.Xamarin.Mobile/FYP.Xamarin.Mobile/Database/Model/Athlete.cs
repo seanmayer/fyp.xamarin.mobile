@@ -12,20 +12,25 @@ namespace FYP.Xamarin.Mobile.Database.Model
         {
         }
 
-        public Athlete(Credentials credentials, string stravaId, string firstName, string lastName)
+        public Athlete(long athleteId, long credentialsId, string stravaId, string accessToken, string firstName, string lastName)
         {
-            Credentials = credentials;
+            AthleteId = athleteId;
+            CredentialsId = credentialsId;
             StravaId = stravaId;
+            AccessToken = accessToken;
             FirstName = firstName;
             LastName = lastName;
         }
 
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public long AthleteId { get; set; }
 
-        public Credentials Credentials { get; set; }
+        [Indexed]
+        public long CredentialsId { get; set; }
 
         public string StravaId { get; set; }
+
+        public string AccessToken { get; set; }
 
         public string FirstName { get; set; }
 
@@ -34,7 +39,7 @@ namespace FYP.Xamarin.Mobile.Database.Model
 
         public override string ToString()
         {
-            return Credentials.ToString() + " " + StravaId + " " + FirstName + " " + LastName;
+            return CredentialsId + " " + StravaId + " " + FirstName + " " + LastName;
         }
 
     }

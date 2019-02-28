@@ -7,6 +7,7 @@ namespace FYP.Xamarin.Mobile.Services.Requests
     interface IRequest
     {
         string MakeCreateRequest();
+        string MakeGetRequest();
         string MakeListRequest();
     }
 }

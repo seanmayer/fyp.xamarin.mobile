@@ -14,6 +14,11 @@ namespace FYP.Xamarin.Mobile.Services.Requests
             return CREATE_CREDENTIALS;
         }
 
+        public string MakeGetRequest()
+        {
+            throw new NotImplementedException();
+        }
+
         public string MakeListRequest()
         {
             return LIST_CREDENTIALS;

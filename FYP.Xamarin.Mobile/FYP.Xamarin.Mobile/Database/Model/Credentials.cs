@@ -11,13 +11,14 @@ namespace FYP.Xamarin.Mobile.Database.Tables
         {
         }
 
-        public Credentials(string username, string password)
+        public Credentials(long credentialsId, string username, string password)
         {
+            CredentialsId = credentialsId;
             Username = username;
             Password = password;
         }
 
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public long CredentialsId { get; set; }
 
         public string Username { get; set; }

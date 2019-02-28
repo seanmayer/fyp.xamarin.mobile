@@ -15,7 +15,7 @@ namespace FYP.Xamarin.Mobile.Database
 
         public DatabaseHandler()
         {
-            var dbPath = DependencyService.Get<IFileHelper>().GetLocalFilePath("SCP_Database.db3.db3");
+            var dbPath = DependencyService.Get<IFileHelper>().GetLocalFilePath("SCP_Databasev1.db3.db3");
             db = new SQLiteAsyncConnection(dbPath);
             db.CreateTableAsync<T>().Wait();
         }

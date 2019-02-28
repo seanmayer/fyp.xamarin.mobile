@@ -37,6 +37,12 @@ public class RequestFactory
     {
         get => SERVICE_PACKAGE + new AthleteRequest().MakeCreateRequest();
     }
+
+    public string GET_ATHLETE
+    {
+        get => SERVICE_PACKAGE + new AthleteRequest().MakeGetRequest();
+    }
+
     public string LIST_ATHLETE
     {
         get => SERVICE_PACKAGE + new AthleteRequest().MakeListRequest();

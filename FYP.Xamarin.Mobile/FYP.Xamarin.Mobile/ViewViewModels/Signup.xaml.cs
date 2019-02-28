@@ -25,23 +25,38 @@ namespace FYP.Xamarin.Mobile
         private DatabaseHandler<Credentials> credentials_DbHandler;
         private DatabaseHandler<Athlete> athlete_DbHandler;
 
+
         public Signup()
         {
             InitializeComponent();
             EstablishConnectionAsync();
             credentials_DbHandler = new DatabaseHandler<Credentials>();
+            athlete_DbHandler = new DatabaseHandler<Athlete>();
         }
 
-        public async void InsertCredentials()
+        public async void InsertCredentials(long credId, string username, string password)
         {
-            Credentials cred = new Credentials(username.Text, password.Text);
-            await credentials_DbHandler.Insert(cred);
+            try
+            {
+                Credentials cred = new Credentials(credId, username, password);
+                await credentials_DbHandler.Insert(cred);
+            }
+            catch (Exception) { await DisplayAlert("Message", "Cred Insert Failed", "OK");  }
         }
 
-        public async void InsertAthlete(Credentials cred, string firstName, string lastName)
+        public long CreatNewPK()
         {
-            Athlete athlete = new Athlete(cred,stravaId.Text,firstName,lastName);
-            await athlete_DbHandler.Insert(athlete);
+            return DateTime.Now.Ticks;
+        }
+
+        public async void InsertAthlete(long athletePK, long credId, string firstName, string lastName, string stravaId, string accessToken)
+        {
+            try
+            {
+                Athlete athlete = new Athlete(athletePK, credId, stravaId, accessToken, firstName, lastName);
+                await athlete_DbHandler.Insert(athlete);
+            }
+            catch (Exception e) { await DisplayAlert("Message", "Athlete Insert Failed" + e.ToString(), "OK"); }
         }
 
         public async void GetCredentialsList()
@@ -54,6 +69,17 @@ namespace FYP.Xamarin.Mobile
             }
         }
 
+        public async Task<AthleteRootObject> GetAthlete(string athleteID)
+        {
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri(RequestFactory.GetSingleton().GET_ATHLETE + athleteID)
+            };
+            HttpResponseMessage response = await client.GetAsync("");
+
+            return JsonConvert.DeserializeObject<AthleteRootObject>(await response.Content.ReadAsStringAsync());
+        }
+
         private async void ConnectToStrava_Clicked(object sender, EventArgs e)
         {
             EstablishConnectionAsync();
@@ -62,20 +88,20 @@ namespace FYP.Xamarin.Mobile
             if (connection == true)
             {
                 this.credentialList = await FindAllCredentials();
-                //this.athleteList = await FindAllAthletes();
-
-               
-                //await DisplayAlert("Message", GetNewAthleteId(), "OK");
-
 
                 if (CheckEmptyFields() == false && CheckCredentialsUsernameExists(username.Text) == false)
                 {
                     await CreateCredentialsService("1", username.Text, password.Text);
                     await CreateAthleteService(GetNewCredendentialsId(), stravaId.Text, stravaApiKey.Text);
-                    //InsertCredentials();
-                    
-                    //this.athleteList = await FindAllAthletes();
-                    //InsertAthlete(new Credentials(username.Text, password.Text), "", "");
+                    this.athleteList = await FindAllAthletes();
+                    string newAthleteId = GetNewAthleteId();
+                    AthleteRootObject a = await GetAthlete(newAthleteId);
+
+                    long credId = CreatNewPK();
+                    long athleteId = CreatNewPK();
+                    InsertCredentials(credId, username.Text, password.Text);
+                    InsertAthlete(athleteId, credId, a.firstname, a.lastname, stravaId.Text, stravaApiKey.Text);
+
                     await DisplayAlert("Message", "You are Signed Up!", "OK");
                 }
             }
@@ -167,8 +193,10 @@ namespace FYP.Xamarin.Mobile
 
         public string GetNewAthleteId()
         {
-            return (athleteList.OrderByDescending(athlete => athlete.AthleteId).FirstOrDefault().AthleteId + 1).ToString();
+            return (athleteList.OrderByDescending(athlete => athlete.athleteId).FirstOrDefault().athleteId).ToString();
         }
+
+       
 
         public string GetJsonMessage(HttpResponseMessage response)
         {
