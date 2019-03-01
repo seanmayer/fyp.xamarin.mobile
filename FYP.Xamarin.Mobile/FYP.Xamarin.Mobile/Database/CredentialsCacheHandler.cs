@@ -42,6 +42,12 @@ namespace FYP.Xamarin.Mobile.Database
             catch (Exception) { return false; }
         }
 
+        public async Task<Credentials> Find(string username, string password)
+        {
+            List<Credentials> myList = await credentials_DbHandler.Get<Credentials>();
+            return myList.Find(c => (c.Username == username) && (c.Password == password));
+        }
+
         public async Task<List<Credentials>> FindAll()
         {
             return await credentials_DbHandler.Get<Credentials>();

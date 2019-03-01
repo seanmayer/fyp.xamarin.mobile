@@ -1,27 +1,46 @@
 ﻿
+using FYP.Xamarin.Mobile.Database;
+using FYP.Xamarin.Mobile.Database.Tables;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace FYP.Xamarin.Mobile
 {
-    public partial class MainPage : ContentPage
+    public partial class Login : ContentPage
     {
-        public MainPage()
+        private CredentialsCacheHandler credentialsCacheHandler;
+
+        public Login()
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-        }
+            credentialsCacheHandler = new CredentialsCacheHandler();
 
+        }
 
         private void Signup_Clicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new Signup());
-            //DisplayAlert("Signup_Clicked", "Signup_Clicked", "OK");
         }
 
-        private void Login_Clicked(object sender, EventArgs e)
+        private async void Login_Clicked(object sender, EventArgs e)
         {
-            DisplayAlert("Login_Clicked", "Login_Clicked", "OK");
+            await CheckLoginCredentialsAsync();
         }
+
+        private async Task CheckLoginCredentialsAsync()
+        {
+            Credentials cred = await credentialsCacheHandler.Find(username.Text, password.Text);
+            if (cred == null)
+            {
+                await DisplayAlert("Message", "Credentials Incorrect!", "OK");
+            }
+            else
+            {
+                await DisplayAlert("Message", "Successful!", "OK");
+            }
+        }
+
     }
 }

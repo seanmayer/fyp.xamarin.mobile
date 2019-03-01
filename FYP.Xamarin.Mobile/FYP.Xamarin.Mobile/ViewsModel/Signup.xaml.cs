@@ -24,6 +24,8 @@ namespace FYP.Xamarin.Mobile
             credentialsServiceHandler = new CredentialsServiceHandler();
         }
 
+        
+
         private async void ConnectToStrava_Clicked(object sender, EventArgs e)
         {
             if (await athleteServiceHandler.EstablishConnection())
@@ -34,6 +36,7 @@ namespace FYP.Xamarin.Mobile
                     && credentialsServiceHandler.CheckCredentialsUsernameExists(username.Text) == false)
                 {
                     await CacheTransactionAsync(await ServiceTransactionsAsync());
+                    await Navigation.PushAsync(new Login());
                     await DisplayAlert("Message", "You are Signed Up!", "OK");
                 }
             }
