@@ -24,18 +24,19 @@ namespace FYP.Xamarin.Mobile
             credentialsServiceHandler = new CredentialsServiceHandler();
         }
 
-        
-
         private async void ConnectToStrava_Clicked(object sender, EventArgs e)
         {
             if (await athleteServiceHandler.EstablishConnection())
             {
+                long credId = athleteCacheHandler.CreatNewPK();
+                long atheleteId = athleteCacheHandler.CreatNewPK();
+
                 credentialsServiceHandler.CredentialList = await credentialsServiceHandler.FindAll();
 
                 if (CheckEmptyFields(username.Text,password.Text,confirmPassword.Text, stravaId.Text, stravaApiKey.Text) == false 
                     && credentialsServiceHandler.CheckCredentialsUsernameExists(username.Text) == false)
                 {
-                    await CacheTransactionAsync(await ServiceTransactionsAsync());
+                    await CacheTransactionAsync(credId, atheleteId, await ServiceTransactionsAsync(credId, atheleteId));
                     await Navigation.PushAsync(new Login());
                     await DisplayAlert("Message", "You are Signed Up!", "OK");
                 }
@@ -47,26 +48,23 @@ namespace FYP.Xamarin.Mobile
 
         }
 
-        public async Task<AthleteRootObject> ServiceTransactionsAsync()
+        public async Task<AthleteRootObject> ServiceTransactionsAsync(long credId, long athleteId)
         {
-            credentialsServiceHandler.Init("1", username.Text, password.Text);
+            credentialsServiceHandler.Init(credId.ToString(), username.Text, password.Text);
             await MessageAsync(await credentialsServiceHandler.Create());
 
-            athleteServiceHandler.Init(credentialsServiceHandler.GetNewId(), stravaId.Text, stravaApiKey.Text);
+            athleteServiceHandler.Init(athleteId.ToString(), credId.ToString(), stravaId.Text, stravaApiKey.Text);
             await MessageAsync(await athleteServiceHandler.Create());
 
-            athleteServiceHandler.AthleteList = await athleteServiceHandler.FindAll();
-            return await athleteServiceHandler.Find(athleteServiceHandler.GetNewId());
+            return await athleteServiceHandler.Find(athleteId.ToString());
         }
 
-        public async Task CacheTransactionAsync(AthleteRootObject athleteRootObject)
+        public async Task CacheTransactionAsync(long credId, long athleteId, AthleteRootObject athleteRootObject)
         {
-            long credId = athleteCacheHandler.CreatNewPK();
-
             credentialsCacheHandler.Init(credId, username.Text, password.Text);
             await MessageAsync(await credentialsCacheHandler.Create());
 
-            athleteCacheHandler.Init(athleteCacheHandler.CreatNewPK(), credId, athleteRootObject.firstname, athleteRootObject.lastname, stravaId.Text, stravaApiKey.Text);
+            athleteCacheHandler.Init(athleteId, credId, athleteRootObject.firstname, athleteRootObject.lastname, stravaId.Text, stravaApiKey.Text);
             await MessageAsync(await athleteCacheHandler.Create());
         }
 

@@ -1,6 +1,7 @@
 ﻿
 using FYP.Xamarin.Mobile.Database;
 using FYP.Xamarin.Mobile.Database.Tables;
+using FYP.Xamarin.Mobile.ViewsModel;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -38,6 +39,7 @@ namespace FYP.Xamarin.Mobile
             }
             else
             {
+                await Navigation.PushAsync(new ActivitieList());
                 await DisplayAlert("Message", "Successful!", "OK");
             }
         }

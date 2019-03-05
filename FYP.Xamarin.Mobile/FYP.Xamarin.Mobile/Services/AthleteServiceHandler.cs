@@ -15,13 +15,15 @@ namespace FYP.Xamarin.Mobile.Services
 {
     public class AthleteServiceHandler : IServerServices<AthleteRootObject>
     {
+        private string AthleteId;
         private string CredId;
         private string StravaId;
         private string AccessToken;
         public List<AthleteRootObject> AthleteList { get; set; }
 
-        public void Init(string credId, string stravaId, string accessToken)
+        public void Init(string athleteId, string credId, string stravaId, string accessToken)
         {
+            this.AthleteId = athleteId;
             this.CredId = credId;
             this.StravaId = stravaId;
             this.AccessToken = accessToken;
@@ -54,7 +56,7 @@ namespace FYP.Xamarin.Mobile.Services
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(RequestFactory.GetSingleton().CREATE_ATHLETE + CredId + "/" + StravaId + "/" + AccessToken)
+                BaseAddress = new Uri(RequestFactory.GetSingleton().CREATE_ATHLETE + AthleteId + "/"+ CredId + "/" + StravaId + "/" + AccessToken)
             };
             HttpResponseMessage response = await client.GetAsync("");
             return CheckResponseCode(response);
@@ -64,7 +66,7 @@ namespace FYP.Xamarin.Mobile.Services
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(RequestFactory.GetSingleton().GET_ATHLETE + athleteID)
+                BaseAddress = new Uri(RequestFactory.GetSingleton().FIND_ATHLETE + athleteID)
             };
             HttpResponseMessage response = await client.GetAsync("");
 

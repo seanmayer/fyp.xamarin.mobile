@@ -8,7 +8,7 @@ namespace FYP.Xamarin.Mobile.Services.Requests
     {
         public string CREATE_ATHLETE = "services.athlete/create/athlete/";
         public string LIST_ATHLETE = "services.athlete/list/athletes/";
-        public string GET_ATHLETE = "services.athlete/get/athlete/";
+        public string FIND_ATHLETE = "services.athlete/find/athlete/";
 
         public string MakeCreateRequest()
         {
@@ -17,7 +17,7 @@ namespace FYP.Xamarin.Mobile.Services.Requests
 
         public string MakeGetRequest()
         {
-            return GET_ATHLETE;
+            return FIND_ATHLETE;
         }
 
         public string MakeListRequest()
