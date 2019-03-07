@@ -29,7 +29,7 @@ namespace FYP.Xamarin.Mobile.Services
         public async Task<bool> EstablishConnection()
         {
             var client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(RequestFactory.GetSingleton().PROJECT_PACKAGE);
+            HttpResponseMessage response = await client.GetAsync(RequestFactory.RequestFactory.GetSingleton().PROJECT_PACKAGE);
             return CheckResponseCode(response);
         }
         public bool CheckResponseCode(HttpResponseMessage response)
@@ -54,7 +54,7 @@ namespace FYP.Xamarin.Mobile.Services
 
             var content = new StringContent(JsonConvert.SerializeObject(jsonObject), System.Text.Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.PostAsync(new Uri(RequestFactory.GetSingleton().CREATE_CREDENTIALS), content);
+            HttpResponseMessage response = await client.PostAsync(new Uri(RequestFactory.RequestFactory.GetSingleton().CREATE_CREDENTIALS), content);
             string responseBody = await response.Content.ReadAsStringAsync();
 
             return CheckResponseCode(response);
@@ -69,7 +69,7 @@ namespace FYP.Xamarin.Mobile.Services
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(RequestFactory.GetSingleton().LIST_CREDENTIALS)
+                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().LIST_CREDENTIALS)
             };
             HttpResponseMessage response = await client.GetAsync("");
 

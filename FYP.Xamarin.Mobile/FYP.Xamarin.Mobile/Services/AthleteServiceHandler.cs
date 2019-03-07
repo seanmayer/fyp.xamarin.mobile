@@ -1,6 +1,7 @@
 ﻿using FYP.Xamarin.Mobile.IServices;
 using FYP.Xamarin.Mobile.Json;
 using FYP.Xamarin.Mobile.Services.Model;
+using FYP.Xamarin.Mobile.Services.RequestFactory;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -32,7 +33,7 @@ namespace FYP.Xamarin.Mobile.Services
         public async Task<bool> EstablishConnection()
         {
             var client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(RequestFactory.GetSingleton().PROJECT_PACKAGE);
+            HttpResponseMessage response = await client.GetAsync(RequestFactory.RequestFactory.GetSingleton().PROJECT_PACKAGE);
             return CheckResponseCode(response);
         }
         public bool CheckResponseCode(HttpResponseMessage response)
@@ -56,7 +57,7 @@ namespace FYP.Xamarin.Mobile.Services
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(RequestFactory.GetSingleton().CREATE_ATHLETE + AthleteId + "/"+ CredId + "/" + StravaId + "/" + AccessToken)
+                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().CREATE_ATHLETE + AthleteId + "/"+ CredId + "/" + StravaId + "/" + AccessToken)
             };
             HttpResponseMessage response = await client.GetAsync("");
             return CheckResponseCode(response);
@@ -66,7 +67,7 @@ namespace FYP.Xamarin.Mobile.Services
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(RequestFactory.GetSingleton().FIND_ATHLETE + athleteID)
+                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().FIND_ATHLETE + athleteID)
             };
             HttpResponseMessage response = await client.GetAsync("");
 
@@ -77,7 +78,7 @@ namespace FYP.Xamarin.Mobile.Services
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(RequestFactory.GetSingleton().LIST_ATHLETE)
+                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().LIST_ATHLETE)
             };
             HttpResponseMessage response = await client.GetAsync("");
 

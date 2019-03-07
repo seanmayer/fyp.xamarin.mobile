@@ -49,5 +49,11 @@ namespace FYP.Xamarin.Mobile.ViewModels
             }
             catch (Exception) { return false; }
         }
+
+        public async Task<Athlete> Find(long credentialId)
+        {
+            List<Athlete> myList = await athlete_DbHandler.Get<Athlete>();
+            return myList.Find(c => (c.CredentialsId == credentialId));
+        }
     }
 }

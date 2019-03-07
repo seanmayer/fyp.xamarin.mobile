@@ -1,10 +1,14 @@
 ﻿using FYP.Xamarin.Mobile.IServices;
+using FYP.Xamarin.Mobile.Services.RequestFactory;
 using FYP.Xamarin.Mobile.Services.Requests;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+
+namespace FYP.Xamarin.Mobile.Services.RequestFactory
+{ 
 
 public class RequestFactory
 {
@@ -55,9 +59,13 @@ public class RequestFactory
     {
         get => SERVICE_PACKAGE + new CredentialsRequest().MakeListRequest();
     }
+    public string LIST_ACTIVITIES
+    {
+        get => SERVICE_PACKAGE + new ActivityRequest().MakeListRequest();
+    }
 
 
-
+}
 
 
 
