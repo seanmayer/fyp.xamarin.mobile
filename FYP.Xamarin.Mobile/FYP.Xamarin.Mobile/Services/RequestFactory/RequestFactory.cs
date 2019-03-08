@@ -59,6 +59,10 @@ public class RequestFactory
     {
         get => SERVICE_PACKAGE + new CredentialsRequest().MakeListRequest();
     }
+    public string CREATE_ACTIVITIES
+    {
+            get => SERVICE_PACKAGE + new ActivityRequest().MakeCreateRequest();
+        }
     public string LIST_ACTIVITIES
     {
         get => SERVICE_PACKAGE + new ActivityRequest().MakeListRequest();

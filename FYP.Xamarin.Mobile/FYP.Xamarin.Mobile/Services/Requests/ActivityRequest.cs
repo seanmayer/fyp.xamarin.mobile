@@ -9,11 +9,11 @@ namespace FYP.Xamarin.Mobile.Services.RequestFactory
     {
      
         public string LIST_ACTIVITY = "services.activity/list/activities";
-
+        public string CREATE_ACTIVITY = "services.activity/create/activities/";
 
         public string MakeCreateRequest()
         {
-            throw new NotImplementedException();
+            return CREATE_ACTIVITY;
         }
 
         public string MakeGetRequest()

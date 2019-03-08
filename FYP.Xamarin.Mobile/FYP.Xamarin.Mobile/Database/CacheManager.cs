@@ -18,6 +18,14 @@ namespace FYP.Xamarin.Mobile.Database
             var dbPath = DependencyService.Get<IFileHelper>().GetLocalFilePath("SCP_Databasev1.db3.db3");
             db = new SQLiteAsyncConnection(dbPath);
             db.CreateTableAsync<T>().Wait();
+            //ClearTables();
+
+        }
+
+        public void ClearTables()
+        {
+            db.ExecuteAsync("DELETE FROM Credentials");
+            db.ExecuteAsync("DELETE FROM Athlete");
         }
 
         public AsyncTableQuery<T> AsQueryable() =>

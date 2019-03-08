@@ -15,14 +15,17 @@ namespace FYP.Xamarin.Mobile.Services
     public class ActivityServiceHandler : IServerServices<ActivityRootObject>
     {
         private string AthleteId;
+        private string StravaId;
+        private string AccessToken;
 
         public List<ActivityRootObject> ActvityList { get; set; }
 
-        public void Init(string athleteId)
+        public void Init(string athleteId, string stravaId, string accessToken)
         {
             AthleteId = athleteId;
+            StravaId = stravaId;
+            AccessToken = accessToken;
         }
-
 
         public bool CheckResponseCode(HttpResponseMessage response)
         {
@@ -34,11 +37,6 @@ namespace FYP.Xamarin.Mobile.Services
             {
                 return false;
             }
-        }
-
-        public Task<bool> Create()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<bool> EstablishConnection()
@@ -53,6 +51,17 @@ namespace FYP.Xamarin.Mobile.Services
             return (string)JObject.Parse(new StreamReader(response.Content.ReadAsStreamAsync().Result).ReadToEnd()).SelectToken("message");
         }
 
+        public async Task<bool> Create()
+        {
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().CREATE_ACTIVITIES + "?athleteId="+ AthleteId +"&stravaId="+StravaId+"&accessToken="+AccessToken)
+            };
+            HttpResponseMessage response = await client.GetAsync("");
+            return CheckResponseCode(response);
+        }
+
+
         public Task<ActivityRootObject> Find(string id)
         {
             throw new NotImplementedException();
@@ -60,8 +69,6 @@ namespace FYP.Xamarin.Mobile.Services
 
         public async Task<List<ActivityRootObject>> FindAll()
         {
-            string debug = RequestFactory.RequestFactory.GetSingleton().LIST_ACTIVITIES + "?athleteId=" + AthleteId;
-
             var client = new HttpClient
             {
                 BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().LIST_ACTIVITIES + "?athleteId="+ AthleteId)

@@ -17,10 +17,8 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         private ActivityServiceHandler activityServiceHandler;
 
         public ObservableCollection<string> Items { get; set; }
-        public string AthleteId;
 
-
-        public ActivitieList(string id)
+        public ActivitieList(string athleteId, string stravaId, string accessToken)
         {
             InitializeComponent();
             activityServiceHandler = new ActivityServiceHandler();
@@ -34,12 +32,25 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             };
 
             MyListView.ItemsSource = Items;
-            AthleteId = id;
+            activityServiceHandler.Init(athleteId, stravaId, accessToken);
         }
 
-        public async Task GetActsAsync(string id)
+        public async Task CreateActivites()
         {
-            activityServiceHandler.Init(id);
+            try
+            {
+               await activityServiceHandler.Create();
+               await DisplayAlert("Message", "Created Activities!", "OK");
+            }
+            catch (Exception e)
+            {
+               await DisplayAlert("Error", e.ToString(), "OK");
+            }
+            
+        }
+
+        public async Task FindAllActivities()
+        {
             try
             {
                 List<Services.Model.ActivityRootObject> x = await activityServiceHandler.FindAll();
@@ -65,8 +76,11 @@ namespace FYP.Xamarin.Mobile.ViewsModel
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
+            await CreateActivites();
+            await FindAllActivities();
 
-            await GetActsAsync(AthleteId);
+            //Cache system next
+            // then can display activities
 
         }
     }

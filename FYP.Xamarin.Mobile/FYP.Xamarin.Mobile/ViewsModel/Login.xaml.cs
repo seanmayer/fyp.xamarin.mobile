@@ -45,7 +45,7 @@ namespace FYP.Xamarin.Mobile
             else
             {
                 Athlete athlete = await athleteCacheHandler.Find(cred.CredentialsId);
-                await Navigation.PushAsync(new ActivitieList(athlete.AthleteId.ToString()));
+                await Navigation.PushAsync(new ActivitieList(athlete.AthleteId.ToString(), athlete.StravaId.ToString(), athlete.AccessToken.ToString()));
                 await DisplayAlert("Message", "Successful!", "OK");
             }
         }
