@@ -1,9 +1,9 @@
-﻿using FYP.Xamarin.Mobile.Services;
+﻿using FYP.Xamarin.Mobile.Database;
+using FYP.Xamarin.Mobile.Services;
+using FYP.Xamarin.Mobile.Services.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -15,6 +15,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
     public partial class ActivitieList : ContentPage
     {
         private ActivityServiceHandler activityServiceHandler;
+        private ActivityCacheHandler activityCacheHandler;
 
         public ObservableCollection<string> Items { get; set; }
 
@@ -22,16 +23,9 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         {
             InitializeComponent();
             activityServiceHandler = new ActivityServiceHandler();
-            Items = new ObservableCollection<string>
-            {
-                "Item 1",
-                "Item 2",
-                "Item 3",
-                "Item 4",
-                "Item 5"
-            };
-
-            MyListView.ItemsSource = Items;
+            activityCacheHandler = new ActivityCacheHandler();
+            Items = new ObservableCollection<string>{};
+            LoadAllCachedActivities();
             activityServiceHandler.Init(athleteId, stravaId, accessToken);
         }
 
@@ -49,39 +43,60 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             
         }
 
-        public async Task FindAllActivities()
+        public async Task<List<ActivityRootObject>> FindAllActivities()
         {
             try
             {
                 List<Services.Model.ActivityRootObject> x = await activityServiceHandler.FindAll();
-
-                foreach (var money in x)
-                {
-                    await DisplayAlert("Message", money.name, "OK");
-                }
+                return x;
             }
             catch (Exception e)
             {
                 await DisplayAlert("Error", e.ToString(), "OK");
+                return null;
             }
-            await DisplayAlert("Message", "Done!", "OK");
         }
 
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
                 return;
-
             await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
-
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
-            await CreateActivites();
-            await FindAllActivities();
-
-            //Cache system next
-            // then can display activities
-
+            SyncCachedActivities();
+            LoadAllCachedActivities();
         }
+
+        public async void SyncCachedActivities()
+        {
+            try
+            {
+                await CreateActivites();
+                foreach (var activity in await FindAllActivities())
+                {
+                    activityCacheHandler.Init(activity.activityId, activity.athleteId.athleteId, activity.stravaid, activity.name, activity.startDate, activity.timeZone);
+                    await activityCacheHandler.Create();
+                }
+            }
+            catch (Exception)
+            {
+                await DisplayAlert("Error", "Sync Failure", "OK");
+            }
+        }
+
+        public async void LoadAllCachedActivities()
+        {
+            //need to do this based from the athlete ID!
+            Items.Clear();
+            foreach (var activity in await activityCacheHandler.FindAll())
+            {
+                Items.Add(activity.activityId +" : "+activity.name);
+
+                MyListView.ItemsSource = Items;
+            }
+        }
+
+
     }
 }
