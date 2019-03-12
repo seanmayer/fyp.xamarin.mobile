@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FYP.Xamarin.Mobile.ViewsModel.ActivityAnaylsis"
+             xmlns:forms="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms">
+
+    <ScrollView>
+        <StackLayout Orientation="Vertical">
+            <forms:ChartView x:Name="Chart2" HeightRequest="266"/>
+            <Grid BackgroundColor="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="Power Peaks" Grid.Row="1" Grid.Column="1" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                <Label Text="Max" Grid.Row="2" Grid.Column="1" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                <Label Text="10s" Grid.Row="3" Grid.Column="1" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                <Label Text="20s" Grid.Row="4" Grid.Column="1" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                <Label Text="30s" Grid.Row="5" Grid.Column="1" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+            </Grid>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

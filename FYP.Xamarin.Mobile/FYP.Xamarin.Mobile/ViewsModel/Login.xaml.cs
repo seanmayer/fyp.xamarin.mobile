@@ -14,6 +14,7 @@ namespace FYP.Xamarin.Mobile
     {
         private CredentialsCacheHandler credentialsCacheHandler;
         private AthleteCacheHandler athleteCacheHandler;
+        private Credentials credentials;
 
         public Login()
         {
@@ -30,10 +31,21 @@ namespace FYP.Xamarin.Mobile
 
         private async void Login_Clicked(object sender, EventArgs e)
         {
+            var isValid = CheckLoginCredentialsAsync();
+            if (await isValid)
+            {
+                Athlete athlete = await athleteCacheHandler.Find(credentials.CredentialsId);
+                Navigation.InsertPageBefore(new ActivitieList(athlete.AthleteId.ToString(), athlete.StravaId.ToString(), athlete.AccessToken.ToString()), this);
+                await Navigation.PopAsync();
+            }
+            else
+            {
+                await DisplayAlert("Message", "Login Failed!", "OK");
+            }
             await CheckLoginCredentialsAsync();
         }
 
-        private async Task CheckLoginCredentialsAsync()
+        private async Task<bool> CheckLoginCredentialsAsync()
         {
             Credentials cred = await credentialsCacheHandler.Find(username.Text, password.Text);
             
@@ -41,12 +53,13 @@ namespace FYP.Xamarin.Mobile
             if (cred == null)
             {
                 await DisplayAlert("Message", "Credentials Incorrect!", "OK");
+                return false;
             }
             else
             {
-                Athlete athlete = await athleteCacheHandler.Find(cred.CredentialsId);
-                await Navigation.PushAsync(new ActivitieList(athlete.AthleteId.ToString(), athlete.StravaId.ToString(), athlete.AccessToken.ToString()));
+                credentials = cred;
                 await DisplayAlert("Message", "Successful!", "OK");
+                return true;
             }
         }
 

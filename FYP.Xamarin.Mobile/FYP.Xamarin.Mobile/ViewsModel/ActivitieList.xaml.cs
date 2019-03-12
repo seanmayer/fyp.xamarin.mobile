@@ -16,8 +16,8 @@ namespace FYP.Xamarin.Mobile.ViewsModel
     {
         private ActivityServiceHandler activityServiceHandler;
         private ActivityCacheHandler activityCacheHandler;
-
         public ObservableCollection<Activity> Items { get; set; }
+        public string AccessToken;
 
         public ActivitieList(string athleteId, string stravaId, string accessToken)
         {
