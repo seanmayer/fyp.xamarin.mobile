@@ -22,6 +22,11 @@ namespace FYP.Xamarin.Mobile.Database
             activityDbHandler = new CacheManager<Activity>();
         }
 
+        public void Init(long athleteId)
+        {
+            AthleteId = athleteId;
+        }
+
         public void Init(long activityId, long athleteId, string stravaid, string name, string startDate, string timeZone)
         {
             ActivityId = activityId;
@@ -50,7 +55,8 @@ namespace FYP.Xamarin.Mobile.Database
 
         public async Task<List<Activity>> FindAll()
         {
-            return await activityDbHandler.Get<Activity>();
+            List<Activity> myList = await activityDbHandler.Get<Activity>();
+            return myList.FindAll(p => p.athleteId == AthleteId);
         }
 
 

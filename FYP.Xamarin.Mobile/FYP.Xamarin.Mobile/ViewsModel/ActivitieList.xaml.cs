@@ -1,11 +1,11 @@
 ﻿using FYP.Xamarin.Mobile.Database;
+using FYP.Xamarin.Mobile.Database.Model;
 using FYP.Xamarin.Mobile.Services;
 using FYP.Xamarin.Mobile.Services.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,16 +17,27 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         private ActivityServiceHandler activityServiceHandler;
         private ActivityCacheHandler activityCacheHandler;
 
-        public ObservableCollection<string> Items { get; set; }
+        public ObservableCollection<Activity> Items { get; set; }
 
         public ActivitieList(string athleteId, string stravaId, string accessToken)
         {
             InitializeComponent();
+            Title = "Recent Rides";
+            ApplyStyles();
             activityServiceHandler = new ActivityServiceHandler();
             activityCacheHandler = new ActivityCacheHandler();
-            Items = new ObservableCollection<string>{};
-            LoadAllCachedActivities();
+            Items = new ObservableCollection<Activity> {};
             activityServiceHandler.Init(athleteId, stravaId, accessToken);
+            activityCacheHandler.Init(Int64.Parse(athleteId));
+            SyncCachedActivities();
+            LoadAllCachedActivities();
+        }
+
+        public void ApplyStyles()
+        {
+            NavigationPage.SetHasBackButton(this, false);
+            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#1F2D44");
+            ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
         }
 
         public async Task CreateActivites()
@@ -52,7 +63,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             }
             catch (Exception e)
             {
-                await DisplayAlert("Error", e.ToString(), "OK");
+                await DisplayAlert("Offline", "Unable to reach server", "OK");
                 return null;
             }
         }
@@ -61,11 +72,8 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         {
             if (e.Item == null)
                 return;
-            await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
-            //Deselect Item
-            ((ListView)sender).SelectedItem = null;
-            SyncCachedActivities();
-            LoadAllCachedActivities();
+            await Navigation.PushAsync(new ActivityMenu((Activity)e.Item));
+            ((ListView)sender).SelectedItem = null;//Deselect Item
         }
 
         public async void SyncCachedActivities()
@@ -87,12 +95,10 @@ namespace FYP.Xamarin.Mobile.ViewsModel
 
         public async void LoadAllCachedActivities()
         {
-            //need to do this based from the athlete ID!
             Items.Clear();
             foreach (var activity in await activityCacheHandler.FindAll())
             {
-                Items.Add(activity.activityId +" : "+activity.name);
-
+                Items.Add(activity);
                 MyListView.ItemsSource = Items;
             }
         }
