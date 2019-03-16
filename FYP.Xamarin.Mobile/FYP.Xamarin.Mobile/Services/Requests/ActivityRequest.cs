@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FYP.Xamarin.Mobile.Services.RequestFactory
 {
-    public class ActivityRequest : IRequest
+    public class ActivityRequest : IRequest<ActivityRequest>
     {
      
         public string LIST_ACTIVITY = "services.activity/list/activities";

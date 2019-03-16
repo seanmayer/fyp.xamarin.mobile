@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FYP.Xamarin.Mobile.Services.Requests
 {
-    public class AthleteRequest  : IRequest
+    public class AthleteRequest  : IRequest<AthleteRequest>
     {
         public string CREATE_ATHLETE = "services.athlete/create/athlete/";
         public string LIST_ATHLETE = "services.athlete/list/athletes/";

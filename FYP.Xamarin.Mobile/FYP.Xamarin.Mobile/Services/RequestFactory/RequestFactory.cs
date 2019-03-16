@@ -20,9 +20,13 @@ public class RequestFactory
     private readonly string _PROJECT_PACKAGE = "FYP.SCPSAA.Web.Services/";
     private readonly string _SERVICE_PACKAGE = "webresources/";
 
+    private IRequest<AthleteRequest> AthleteRequest = new AthleteRequest();
+    private IRequest<CredentialsRequest> CredentialRequest = new CredentialsRequest();
+    private IRequest<ActivityRequest> ActivityRequest = new ActivityRequest();
+
     public static RequestFactory GetSingleton()
     {
-        return Instance;
+        return Instance;      
     }
 
     public string SERVER_ADDRESS
@@ -39,33 +43,33 @@ public class RequestFactory
     }
     public string CREATE_ATHLETE
     {
-        get => SERVICE_PACKAGE + new AthleteRequest().MakeCreateRequest();
+        get => SERVICE_PACKAGE + AthleteRequest.MakeCreateRequest();
     }
 
     public string FIND_ATHLETE
     {
-        get => SERVICE_PACKAGE + new AthleteRequest().MakeGetRequest();
+        get => SERVICE_PACKAGE + AthleteRequest.MakeGetRequest();
     }
 
     public string LIST_ATHLETE
     {
-        get => SERVICE_PACKAGE + new AthleteRequest().MakeListRequest();
+        get => SERVICE_PACKAGE + AthleteRequest.MakeListRequest();
     }
     public string CREATE_CREDENTIALS
     {
-        get => SERVICE_PACKAGE + new CredentialsRequest().MakeCreateRequest();
+        get => SERVICE_PACKAGE + CredentialRequest.MakeCreateRequest();
     }
     public string LIST_CREDENTIALS
     {
-        get => SERVICE_PACKAGE + new CredentialsRequest().MakeListRequest();
+        get => SERVICE_PACKAGE + CredentialRequest.MakeListRequest();
     }
     public string CREATE_ACTIVITIES
     {
-            get => SERVICE_PACKAGE + new ActivityRequest().MakeCreateRequest();
+            get => SERVICE_PACKAGE + CredentialRequest.MakeCreateRequest();
         }
     public string LIST_ACTIVITIES
     {
-        get => SERVICE_PACKAGE + new ActivityRequest().MakeListRequest();
+        get => SERVICE_PACKAGE + ActivityRequest.MakeListRequest();
     }
 
 

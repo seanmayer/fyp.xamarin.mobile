@@ -1,6 +1,5 @@
 ﻿using FYP.Xamarin.Mobile.IServices;
 using FYP.Xamarin.Mobile.Services.Model;
-using FYP.Xamarin.Mobile.Services.RequestFactory;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FYP.Xamarin.Mobile.Services.Requests
 {
-    public class CredentialsRequest : IRequest
+    public class CredentialsRequest : IRequest<CredentialsRequest>
     {
         public string CREATE_CREDENTIALS = "services.credentials/create/credentials/";
         public string LIST_CREDENTIALS = "services.credentials/list/credentials/";
