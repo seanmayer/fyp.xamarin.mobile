@@ -24,6 +24,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             InitializeComponent();
             Title = "Recent Rides";
             ApplyStyles();
+            this.AccessToken = accessToken;
             activityServiceHandler = new ActivityServiceHandler();
             activityCacheHandler = new ActivityCacheHandler();
             Items = new ObservableCollection<Activity> {};
@@ -72,7 +73,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         {
             if (e.Item == null)
                 return;
-            await Navigation.PushAsync(new ActivityMenu((Activity)e.Item));
+            await Navigation.PushAsync(new ActivityMenu((Activity)e.Item, AccessToken));
             ((ListView)sender).SelectedItem = null;//Deselect Item
         }
 

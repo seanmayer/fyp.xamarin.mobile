@@ -11,70 +11,57 @@ using Entry = Microcharts.Entry;
 using Xamarin.Forms.Xaml;
 using FYP.Xamarin.Mobile.Services.Model;
 using FYP.Xamarin.Mobile.Services;
+using FYP.Xamarin.Mobile.Database;
+using FYP.Xamarin.Mobile.ViewModels;
+using FYP.Xamarin.Mobile.Database.Model;
+using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace FYP.Xamarin.Mobile.ViewsModel
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ActivityAnaylsis : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class ActivityAnaylsis : ContentPage
+    {
         private PowerStreamServiceHandler powerStreamServiceHandler;
+        private PowerCacheHandler powerCacheHandler;
+        private long ActivityId;
+        private List<Entry> Entries = new List<Entry>();
+        private Dictionary <int, long> powerStream;
+        //{
+        //    new Entry(200)
+        //    {
+        //        Color=SKColor.Parse("#FF1943"),
+        //        //Label ="January",
+        //        //ValueLabel = "200"
+        //    },
+        //    new Entry(400)
+        //    {
+        //        Color = SKColor.Parse("00BFFF"),
+        //        //Label = "March",
+        //        //ValueLabel = "400"
+        //    },
+        //    };
 
-
-        List<Entry> entries = new List<Entry>
+        public ActivityAnaylsis(Activity activity, string accessToken)
         {
-            new Entry(200)
-            {
-                Color=SKColor.Parse("#FF1943"),
-                //Label ="January",
-                //ValueLabel = "200"
-            },
-            new Entry(400)
-            {
-                Color = SKColor.Parse("00BFFF"),
-                //Label = "March",
-                //ValueLabel = "400"
-            },
-            };
+            InitializeComponent();
+            Title = "Loading" + activity.activityId;
+            this.ActivityId = activity.activityId;
+            ApplyStyles();
+            powerStreamServiceHandler = new PowerStreamServiceHandler();
+            powerCacheHandler = new PowerCacheHandler();
+            powerStreamServiceHandler.Init(activity.activityId.ToString(), activity.stravaid.ToString(), accessToken);
+            SyncCachedPowerStream();
+        }
 
-
-
-
-        public ActivityAnaylsis()
-		{
-			InitializeComponent();
-            Title = "Loading";
+        public void ApplyStyles()
+        {
             BackgroundColor = Color.FromHex("#1F2D44");
             ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#1F2D44");
             ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
-            powerStreamServiceHandler = new PowerStreamServiceHandler();
-            powerStreamServiceHandler.Init("1984914419", "35193560", "e8a14408cd001cb6a86607a21ff50bd42f0b76f8");
-            SyncCachedPowerStream();
-
-            for (int i = 0; i < 100; i++)
-            {
-                Random random = new Random();
-                int randomNumber = random.Next(i*2, i*10);
-
-                entries.Add(new Entry(randomNumber)
-                {
-                    Color = SKColor.Parse("#00CED1"),
-                    //Label = "Octobar",
-                    //ValueLabel = randomNumber.ToString()
-
-                });
-            }
-
-            Chart2.Chart = new LineChart()
-            {
-                Entries = entries,
-                LineMode = LineMode.Straight,
-                LineSize = 1,
-                PointMode = PointMode.None,
-                PointSize = 1,
-            };
         }
 
-        public async Task<List<PowerRootObject>> FindAllPowerStream()
+        public async Task<List<PowerRootObject>> RequestFindPowerStream()
         {
             try
             {
@@ -88,7 +75,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             }
         }
 
-        public async Task CreatePowerStream()
+        public async Task RequestCreatePowerStream()
         {
             try
             {
@@ -101,17 +88,71 @@ namespace FYP.Xamarin.Mobile.ViewsModel
 
         }
 
+        public async Task<bool> CheckPowerCache()
+        {
+            List<Power> list = await powerCacheHandler.Find(ActivityId);
+            if (list.Count() != 0){ await DisplayAlert("Done", "Exists", "OK"); return true;}
+            else{ await DisplayAlert("Done", "Does not Exists", "OK"); return false;}     
+        }
+
+        public async Task<bool> CacheCreatePowerStream()
+        {
+            try
+            {
+                foreach (var power in await RequestFindPowerStream())
+                {
+                    powerCacheHandler.Init(ActivityId, power.powerstream);
+                    await powerCacheHandler.Create();
+                }
+                await DisplayAlert("Done", "Created Power Cache", "OK");
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
+
         public async void SyncCachedPowerStream()
         {
-            await CreatePowerStream();
-            //foreach (var power in await FindAllPowerStream())
-            //{
-            //    powerStreamCacheHandler.Init(activity.activityId, activity.athleteId.athleteId, activity.stravaid, activity.name, activity.startDate, activity.timeZone);
-            //    await powerStreamCacheHandler.Create();
-            //}
+            await RequestCreatePowerStream();
+            if (await CheckPowerCache() == false)
+            {
+                await CacheCreatePowerStream();
+            }
+            SetPowerCache();
+           
+        }
 
-            //List<PowerRootObject> powerstream = await FindAllPowerStream();
-            //await DisplayAlert("Test", powerstream.ToString(), "OK");
+        public async void SetPowerCache()
+        {
+            foreach (Power p in await powerCacheHandler.Find(ActivityId))
+            {
+                this.powerStream = JsonConvert.DeserializeObject<Dictionary<int, long>>(p.stream);
+            }
+            RefreshChart();
+        }
+
+        public void RefreshChart()
+        {
+            foreach (KeyValuePair<int, long> entry in powerStream.OrderBy(d => d.Key).ToList())
+            {
+                Entries.Add(new Entry(entry.Value)
+                {
+                    Color = SKColor.Parse("#00CED1"),
+                    //Label = entry.Value.ToString(),
+                    //ValueLabel = randomNumber.ToString()
+
+                });
+            }
+            Chart2.Chart = new LineChart()
+            {
+                Entries = Entries,
+                LineMode = LineMode.Straight,
+                LineSize = 1,
+                PointMode = PointMode.None,
+                PointSize = 1,
+            };
         }
     }
 }

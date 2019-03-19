@@ -52,7 +52,7 @@ namespace FYP.Xamarin.Mobile.Database
             }
             catch (Exception) { return false; }
         }
-
+     
         public async Task<List<Activity>> FindAll()
         {
             List<Activity> myList = await activityDbHandler.Get<Activity>();

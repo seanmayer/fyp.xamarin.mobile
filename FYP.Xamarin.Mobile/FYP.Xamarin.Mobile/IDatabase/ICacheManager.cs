@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FYP.Xamarin.Mobile.Database
 {
-    public interface IDatabaseHandler<T> where T : class, new()
+    public interface ICacheManager<T> where T : class, new()
     {
         Task<List<T>> Get();
         Task<T> Get(int id);

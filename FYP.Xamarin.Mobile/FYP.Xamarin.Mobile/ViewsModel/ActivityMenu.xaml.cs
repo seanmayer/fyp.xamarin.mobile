@@ -1,10 +1,4 @@
 ﻿using FYP.Xamarin.Mobile.Database.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,20 +7,23 @@ namespace FYP.Xamarin.Mobile.ViewsModel
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ActivityMenu : ContentPage
 	{
+        private Activity Activity;
+        private string AccessToken;
 
-		public ActivityMenu ()
+		public ActivityMenu()
 		{
-			InitializeComponent ();
+			InitializeComponent();
             Title = "Loading";
             ApplyStyles();
         }
 
-        public ActivityMenu(Activity activity)
+        public ActivityMenu(Activity activity, string accessToken)
         {
             InitializeComponent();
             Title = activity.name;
+            this.Activity = activity;
+            this.AccessToken = accessToken;
             ApplyStyles();
-
         }
 
 
@@ -68,9 +65,9 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             var btn2 = new Button { Text = "Cadence", Style = greenButton };
             var btn3 = new Button { Text = "Speed", Style = blueButton };
 
-            btn1.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis());
-            btn2.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis());
-            btn3.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis());
+            btn1.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken));
+            btn2.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken));
+            btn3.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken));
 
             var controlGrid = new Grid { RowSpacing = 15, ColumnSpacing = 15 };
             controlGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0) });

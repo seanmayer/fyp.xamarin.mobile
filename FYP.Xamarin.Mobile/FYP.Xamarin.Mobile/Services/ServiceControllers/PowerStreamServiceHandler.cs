@@ -17,7 +17,7 @@ namespace FYP.Xamarin.Mobile.Services
         private string StravaId;
         private string AccessToken;
 
-        public List<PowerRootObject> ActvityList { get; set; }
+        public List<PowerRootObject> PowerStreamList { get; set; }
 
         public void Init(string activityId, string stravaId, string accessToken)
         {
@@ -68,17 +68,13 @@ namespace FYP.Xamarin.Mobile.Services
 
         public async Task<List<PowerRootObject>> FindAll()
         {
-            string test = RequestFactory.RequestFactory.GetSingleton().LIST_POWERSTREAM;
             var client = new HttpClient
             {
                 BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().LIST_POWERSTREAM + "?activityId=" + ActivityId)
             };
             HttpResponseMessage response = await client.GetAsync("");
-            string test2 = (string)JObject.Parse(new StreamReader(response.Content.ReadAsStreamAsync().Result).ReadToEnd()).SelectToken("powerstream");
-
             List<PowerRootObject> powerstream = new List<PowerRootObject>();
             powerstream.Add(new PowerRootObject((string)JObject.Parse(new StreamReader(response.Content.ReadAsStreamAsync().Result).ReadToEnd()).SelectToken("powerstream")));
-
             return powerstream;
         }
 

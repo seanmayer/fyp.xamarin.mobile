@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace FYP.Xamarin.Mobile.Database
 {
-    public class CacheManager<T> : IDatabaseHandler<T> where T : class, new()
+    public class CacheManager<T> : ICacheManager<T> where T : class, new()
     {
         private SQLiteAsyncConnection db;
 
@@ -18,14 +18,16 @@ namespace FYP.Xamarin.Mobile.Database
             var dbPath = DependencyService.Get<IFileHelper>().GetLocalFilePath("SCP_Databasev1.db3.db3");
             db = new SQLiteAsyncConnection(dbPath);
             db.CreateTableAsync<T>().Wait();
-            //ClearTables();
+            ClearTables();
 
         }
 
         public void ClearTables()
         {
-            db.ExecuteAsync("DELETE FROM Credentials");
-            db.ExecuteAsync("DELETE FROM Athlete");
+            //db.ExecuteAsync("DELETE FROM Credentials");
+            //db.ExecuteAsync("DELETE FROM Athlete");
+            //db.ExecuteAsync("DELETE FROM Activity");
+            //db.ExecuteAsync("DELETE FROM Power");
         }
 
         public AsyncTableQuery<T> AsQueryable() =>
