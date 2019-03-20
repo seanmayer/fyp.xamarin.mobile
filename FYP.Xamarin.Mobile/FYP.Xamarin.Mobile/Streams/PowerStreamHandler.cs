@@ -1,12 +1,12 @@
 ﻿using FYP.Xamarin.Mobile.Database.Model;
 using FYP.Xamarin.Mobile.Services;
 using FYP.Xamarin.Mobile.Services.Model;
+using FYP.Xamarin.Mobile.Services.Model.Null_Object;
 using FYP.Xamarin.Mobile.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FYP.Xamarin.Mobile.Streams
@@ -33,9 +33,9 @@ namespace FYP.Xamarin.Mobile.Streams
                 List<PowerRootObject> x = await powerStreamServiceHandler.FindAll();
                 return x;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                //await DisplayAlert("Offline", "Unable to reach server" + e, "OK");
+                new NullPowerRootObject();
                 return null;
             }
         }
@@ -46,9 +46,9 @@ namespace FYP.Xamarin.Mobile.Streams
             {
                 await powerStreamServiceHandler.Create();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                //await DisplayAlert("Error", e.ToString(), "OK");
+                new NullPowerRootObject();
             }
 
         }
@@ -58,12 +58,10 @@ namespace FYP.Xamarin.Mobile.Streams
             List<Power> list = await powerCacheHandler.Find(ActivityId);
             if (list.Count() != 0)
             {
-                //await DisplayAlert("Done", "Exists", "OK");
                 return true;
             }
             else
             {
-                //await DisplayAlert("Done", "Does not Exists", "OK"); 
                 return false;
             }
         }
@@ -77,7 +75,7 @@ namespace FYP.Xamarin.Mobile.Streams
                     powerCacheHandler.Init(ActivityId, power.powerstream);
                     await powerCacheHandler.Create();
                 }
-                //await DisplayAlert("Done", "Created Power Cache", "OK");
+
                 return true;
             }
             catch (Exception e)
@@ -88,14 +86,12 @@ namespace FYP.Xamarin.Mobile.Streams
 
         public async Task<Dictionary<int, long>> SyncCachedStream()
         {
-            
             if (await CheckCache() == false)
             {
                 await RequestCreateStream();
                 await CacheCreateStream();
             }
             return await SetCache();
-
         }
 
         public async Task<Dictionary<int, long>> SetCache()
@@ -105,7 +101,6 @@ namespace FYP.Xamarin.Mobile.Streams
                 return JsonConvert.DeserializeObject<Dictionary<int, long>>(p.stream);
             }
             return null;
-            //RefreshChart();
         }
     }
 }

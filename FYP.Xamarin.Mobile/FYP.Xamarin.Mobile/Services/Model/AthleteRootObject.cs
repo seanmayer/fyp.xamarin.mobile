@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FYP.Xamarin.Mobile.Services.Model
 {
-    public class AthleteRootObject
+    public class AthleteRootObject : AbstractRootObject
     {
         public long athleteId { get; set; }
 
@@ -15,9 +15,9 @@ namespace FYP.Xamarin.Mobile.Services.Model
 
         public string lastname { get; set; }
 
-        public override string ToString()
+        public override bool isNil()
         {
-            return stravaId + " " + firstname + " " + lastname;
+            return false;
         }
     }
 }

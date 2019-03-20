@@ -30,7 +30,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         public ActivityAnaylsis(Activity activity, string accessToken)
         {
             InitializeComponent();
-            Title = "Loading" + activity.activityId;
+            Title = activity.startDate;
             ApplyStyles();
             psh = new PowerStreamHandler(activity, accessToken);
             RefreshChart();

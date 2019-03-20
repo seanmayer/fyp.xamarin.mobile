@@ -4,7 +4,8 @@ using System.Text;
 
 namespace FYP.Xamarin.Mobile.Services.Model
 {
-    public class PowerLinkRootObject
+    public abstract class AbstractRootObject
     {
+        public abstract bool isNil();
     }
 }

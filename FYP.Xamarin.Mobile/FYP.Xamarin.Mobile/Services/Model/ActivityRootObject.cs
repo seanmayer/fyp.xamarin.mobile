@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FYP.Xamarin.Mobile.Services.Model
 {
-    public class ActivityRootObject
+    public class ActivityRootObject : AbstractRootObject
     {
         public long activityId { get; set; }
 
@@ -18,14 +18,15 @@ namespace FYP.Xamarin.Mobile.Services.Model
 
         public string timeZone { get; set; }
 
-        public override string ToString()
-        {
-            return activityId + " " + athleteId;
-        }
-
         public class AthleteId
         {
             public long athleteId { get; set; }
         }
+
+        public override bool isNil()
+        {
+            return false;
+        }
+
     }
 }
