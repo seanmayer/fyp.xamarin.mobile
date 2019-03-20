@@ -24,11 +24,6 @@ namespace FYP.Xamarin.Mobile.ViewModels
             this.Stream = stream;
         }
 
-        public long CreatNewPK()
-        {
-            return DateTime.Now.Ticks;
-        }
-
         public async Task<bool> Create()
         {
             try
@@ -56,3 +51,5 @@ namespace FYP.Xamarin.Mobile.ViewModels
         }
     }
 }
+
+

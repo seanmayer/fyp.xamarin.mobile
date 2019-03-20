@@ -37,11 +37,6 @@ namespace FYP.Xamarin.Mobile.Database
             TimeZone = timeZone;
         }
 
-        public long CreatNewPK()
-        {
-            return DateTime.Now.Ticks;
-        }
-
         public async Task<bool> Create()
         {
             try

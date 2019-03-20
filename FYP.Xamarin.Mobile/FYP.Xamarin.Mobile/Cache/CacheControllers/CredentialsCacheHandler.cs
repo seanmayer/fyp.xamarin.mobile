@@ -13,12 +13,6 @@ namespace FYP.Xamarin.Mobile.Database
         private string Username;
         private string Password;
 
-
-        public long CreatNewPK()
-        {
-            return DateTime.Now.Ticks;
-        }
-
         public void Init(long credId, string username, string password)
         {
             this.CredId = credId;
