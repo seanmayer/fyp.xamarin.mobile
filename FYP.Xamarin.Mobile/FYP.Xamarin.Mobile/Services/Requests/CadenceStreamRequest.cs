@@ -3,15 +3,15 @@ using System;
 
 namespace FYP.Xamarin.Mobile.Services.RequestFactory
 {
-    public class PowerStreamRequest : IRequest<PowerStreamRequest>
+    public class CadenceStreamRequest : IRequest<CadenceStreamRequest>
     {
      
-        public string LIST_POWERSTREAM = "services.power/list/powerstream";
-        public string CREATE_POWERSTREAM = "services.power/create/powerstream/";
+        public string LIST_CADENCESTREAM = "services.cadence/list/cadencestream";
+        public string CREATE_CADENCESTREAM = "services.cadence/create/cadencestream/";
 
         public string MakeCreateRequest()
         {
-            return CREATE_POWERSTREAM;
+            return CREATE_CADENCESTREAM;
         }
 
         public string MakeGetRequest()
@@ -21,7 +21,7 @@ namespace FYP.Xamarin.Mobile.Services.RequestFactory
 
         public string MakeListRequest()
         {
-            return LIST_POWERSTREAM;
+            return LIST_CADENCESTREAM;
         }
     }
 }

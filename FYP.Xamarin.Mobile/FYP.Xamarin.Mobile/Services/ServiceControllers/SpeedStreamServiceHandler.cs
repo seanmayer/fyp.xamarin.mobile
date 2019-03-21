@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace FYP.Xamarin.Mobile.Services
 {
-    public class PowerStreamServiceHandler : IServerServices<PowerRootObject>
+    public class SpeedStreamServiceHandler : IServerServices<SpeedRootObject>
     {
         private string ActivityId;
         private string StravaId;
         private string AccessToken;
 
-        public List<PowerRootObject> PowerStreamList { get; set; }
+        public List<SpeedRootObject> SpeedStreamList { get; set; }
 
         public void Init(string activityId, string stravaId, string accessToken)
         {
@@ -52,28 +52,28 @@ namespace FYP.Xamarin.Mobile.Services
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().CREATE_POWERSTREAM + "?activityId=" + ActivityId + "&stravaId="+StravaId+"&accessToken="+AccessToken)
+                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().CREATE_SPEEDSTREAM + "?activityId=" + ActivityId + "&stravaId="+StravaId+"&accessToken="+AccessToken)
             };
             HttpResponseMessage response = await client.GetAsync("");
             return CheckResponseCode(response);
         }
 
 
-        public Task<PowerRootObject> Find(string id)
+        public Task<SpeedRootObject> Find(string id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<PowerRootObject>> FindAll()
+        public async Task<List<SpeedRootObject>> FindAll()
         {
             var client = new HttpClient
             {
-                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().LIST_POWERSTREAM + "?activityId=" + ActivityId)
+                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().LIST_SPEEDSTREAM + "?activityId=" + ActivityId)
             };
             HttpResponseMessage response = await client.GetAsync("");
-            List<PowerRootObject> powerstream = new List<PowerRootObject>();
-            powerstream.Add(new PowerRootObject((string)JObject.Parse(new StreamReader(response.Content.ReadAsStreamAsync().Result).ReadToEnd()).SelectToken("powerstream")));
-            return powerstream;
+            List<SpeedRootObject> speedstream = new List<SpeedRootObject>();
+            speedstream.Add(new SpeedRootObject((string)JObject.Parse(new StreamReader(response.Content.ReadAsStreamAsync().Result).ReadToEnd()).SelectToken("speedstream")));
+            return speedstream;
         }
 
  

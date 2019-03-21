@@ -17,6 +17,8 @@ namespace FYP.Xamarin.Mobile.Services.RequestFactory
         private IRequest<CredentialsRequest> CredentialRequest = new CredentialsRequest();
         private IRequest<ActivityRequest> ActivityRequest = new ActivityRequest();
         private IRequest<PowerStreamRequest> PowerStreamRequest = new PowerStreamRequest();
+        private IRequest<CadenceStreamRequest> CadenceStreamRequest = new CadenceStreamRequest();
+        private IRequest<SpeedStreamRequest> SpeedStreamRequest = new SpeedStreamRequest();
 
         public static RequestFactory GetSingleton()
         {
@@ -70,5 +72,22 @@ namespace FYP.Xamarin.Mobile.Services.RequestFactory
         {
             get => SERVICE_PACKAGE + PowerStreamRequest.MakeListRequest();
         }
+        public string CREATE_SPEEDSTREAM
+        {
+            get => SERVICE_PACKAGE + SpeedStreamRequest.MakeCreateRequest();
+        }
+        public string LIST_SPEEDSTREAM
+        {
+            get => SERVICE_PACKAGE + SpeedStreamRequest.MakeListRequest();
+        }
+        public string CREATE_CADENCESTREAM
+        {
+            get => SERVICE_PACKAGE + CadenceStreamRequest.MakeCreateRequest();
+        }
+        public string LIST_CADENCESTREAM
+        {
+            get => SERVICE_PACKAGE + CadenceStreamRequest.MakeListRequest();
+        }
+
     }
 }

@@ -9,11 +9,14 @@ namespace FYP.Xamarin.Mobile.ViewsModel
 	{
         private Activity Activity;
         private string AccessToken;
+        private string buttonDefinition1 = "Power";
+        private string buttonDefinition2 = "Cadence";
+        private string buttonDefinition3 = "Speed";
 
-		public ActivityMenu()
+        public ActivityMenu()
 		{
 			InitializeComponent();
-            Title = "Loading";
+            Title = Activity.name;
             ApplyStyles();
         }
 
@@ -61,13 +64,13 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 }
             };
 
-            var btn1 = new Button { Text = "Power", Style = redButton, };
-            var btn2 = new Button { Text = "Cadence", Style = greenButton };
-            var btn3 = new Button { Text = "Speed", Style = blueButton };
+            var btn1 = new Button { Text = buttonDefinition1, Style = redButton, };
+            var btn2 = new Button { Text = buttonDefinition2, Style = greenButton };
+            var btn3 = new Button { Text = buttonDefinition3, Style = blueButton };
 
-            btn1.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken));
-            btn2.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken));
-            btn3.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken));
+            btn1.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken, buttonDefinition1));
+            btn2.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken, buttonDefinition2));
+            btn3.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken, buttonDefinition3));
 
             var controlGrid = new Grid { RowSpacing = 15, ColumnSpacing = 15 };
             controlGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0) });

@@ -17,23 +17,21 @@ using FYP.Xamarin.Mobile.Database.Model;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using FYP.Xamarin.Mobile.Streams;
+using FYP.Xamarin.Mobile.Streams.StreamFactory;
 
 namespace FYP.Xamarin.Mobile.ViewsModel
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ActivityAnaylsis : ContentPage
     {
-        private PowerStreamHandler psh;
         private List<Entry> Entries = new List<Entry>();
 
-
-        public ActivityAnaylsis(Activity activity, string accessToken)
+        public ActivityAnaylsis(Activity activity, string accessToken, string menuSelection)
         {
             InitializeComponent();
-            Title = activity.startDate;
+            Title = menuSelection;
             ApplyStyles();
-            psh = new PowerStreamHandler(activity, accessToken);
-            RefreshChart();
+            LoadChart(StreamFactory.GetSingleton(activity, accessToken).CreateStream(menuSelection));
         }
 
         public void ApplyStyles()
@@ -43,10 +41,9 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
         }
 
-
-        public async void RefreshChart()
+        public async void LoadChart(Task<Dictionary<int, long>> entries)
         {
-            foreach (KeyValuePair<int, long> entry in await psh.SyncCachedStream())
+            foreach (KeyValuePair<int, long> entry in await entries)
             {
                 Entries.Add(new Entry(entry.Value)
                 {

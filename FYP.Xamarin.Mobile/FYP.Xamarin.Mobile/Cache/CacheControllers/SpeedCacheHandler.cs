@@ -1,0 +1,55 @@
+﻿using FYP.Xamarin.Mobile.Database;
+using FYP.Xamarin.Mobile.Database.Model;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace FYP.Xamarin.Mobile.ViewModels
+{
+    public class SpeedCacheHandler
+    {
+        private CacheManager<Speed> speed_DbHandler;
+
+        private long ActivityId;
+        private string Stream;
+
+        public SpeedCacheHandler()
+        {
+            speed_DbHandler = new CacheManager<Speed>();
+        }
+
+        public void Init(long activityId, string stream)
+        {
+            this.ActivityId = activityId;
+            this.Stream = stream;
+        }
+
+        public async Task<bool> Create()
+        {
+            try
+            {
+                Speed speed = new Speed(ActivityId, Stream);
+                await speed_DbHandler.Insert(speed);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public async Task<List<Speed>> Find(long activityId)
+        {
+            List<Speed> myList = await speed_DbHandler.Get<Speed>();
+            return myList.FindAll(c => (c.activityId == activityId));
+        }
+
+        public async Task<List<Speed>> FindAll()
+        {
+            return await speed_DbHandler.Get<Speed>();
+
+        }
+    }
+}
+
+
