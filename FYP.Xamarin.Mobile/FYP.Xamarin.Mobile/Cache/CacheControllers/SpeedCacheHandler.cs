@@ -1,4 +1,5 @@
-﻿using FYP.Xamarin.Mobile.Database;
+﻿using FYP.Xamarin.Mobile.Cache.CacheControllers;
+using FYP.Xamarin.Mobile.Database;
 using FYP.Xamarin.Mobile.Database.Model;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FYP.Xamarin.Mobile.ViewModels
 {
-    public class SpeedCacheHandler
+    public class SpeedCacheHandler : ICacheHandlerFacade<Speed>
     {
         private CacheManager<Speed> speed_DbHandler;
 
@@ -38,7 +39,12 @@ namespace FYP.Xamarin.Mobile.ViewModels
             }
         }
 
-        public async Task<List<Speed>> Find(long activityId)
+        public Task<Speed> Find(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<Speed>> FindList(long activityId)
         {
             List<Speed> myList = await speed_DbHandler.Get<Speed>();
             return myList.FindAll(c => (c.activityId == activityId));
@@ -49,6 +55,7 @@ namespace FYP.Xamarin.Mobile.ViewModels
             return await speed_DbHandler.Get<Speed>();
 
         }
+
     }
 }
 

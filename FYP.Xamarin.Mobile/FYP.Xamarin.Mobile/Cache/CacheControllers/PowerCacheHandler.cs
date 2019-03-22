@@ -1,4 +1,5 @@
-﻿using FYP.Xamarin.Mobile.Database;
+﻿using FYP.Xamarin.Mobile.Cache.CacheControllers;
+using FYP.Xamarin.Mobile.Database;
 using FYP.Xamarin.Mobile.Database.Model;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FYP.Xamarin.Mobile.ViewModels
 {
-    public class PowerCacheHandler
+    public class PowerCacheHandler : ICacheHandlerFacade<Power>
     {
         private CacheManager<Power> power_DbHandler;
 
@@ -38,17 +39,25 @@ namespace FYP.Xamarin.Mobile.ViewModels
             }
         }
 
-        public async Task<List<Power>> Find(long activityId)
+
+        public Task<Power> Find(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<Power>> FindList(long activityId)
         {
             List<Power> myList = await power_DbHandler.Get<Power>();
             return myList.FindAll(c => (c.activityId == activityId));
         }
+
 
         public async Task<List<Power>> FindAll()
         {
             return await power_DbHandler.Get<Power>();
 
         }
+
     }
 }
 

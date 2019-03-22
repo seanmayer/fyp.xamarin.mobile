@@ -55,7 +55,7 @@ namespace FYP.Xamarin.Mobile.Streams
 
         public async Task<bool> CheckCache()
         {
-            List<Power> list = await powerCacheHandler.Find(ActivityId);
+            List<Power> list = await powerCacheHandler.FindList(ActivityId);
             if (list.Count() != 0)
             {
                 return true;
@@ -96,7 +96,7 @@ namespace FYP.Xamarin.Mobile.Streams
 
         public async Task<Dictionary<int, long>> SetCache()
         {
-            foreach (Power p in await powerCacheHandler.Find(ActivityId))
+            foreach (Power p in await powerCacheHandler.FindList(ActivityId))
             {
                 return JsonConvert.DeserializeObject<Dictionary<int, long>>(p.stream);
             }

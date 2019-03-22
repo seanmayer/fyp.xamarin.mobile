@@ -1,4 +1,5 @@
-﻿using FYP.Xamarin.Mobile.Database;
+﻿using FYP.Xamarin.Mobile.Cache.CacheControllers;
+using FYP.Xamarin.Mobile.Database;
 using FYP.Xamarin.Mobile.Database.Model;
 using FYP.Xamarin.Mobile.Database.Tables;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FYP.Xamarin.Mobile.ViewModels
 {
-    public class AthleteCacheHandler
+    public class AthleteCacheHandler : ICacheHandlerFacade<Athlete>
     {
         private CacheManager<Athlete> athlete_DbHandler;
 
@@ -54,6 +55,16 @@ namespace FYP.Xamarin.Mobile.ViewModels
         {
             List<Athlete> myList = await athlete_DbHandler.Get<Athlete>();
             return myList.Find(c => (c.CredentialsId == credentialId));
+        }
+
+        public Task<List<Athlete>> FindList(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Athlete>> FindAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }
