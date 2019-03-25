@@ -24,6 +24,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ActivityAnaylsis : ContentPage
     {
+        private Task<Dictionary<int, long>> Stream;
         private List<Entry> Entries = new List<Entry>();
 
         public ActivityAnaylsis(Activity activity, string accessToken, string menuSelection)
@@ -31,7 +32,10 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             InitializeComponent();
             Title = menuSelection;
             ApplyStyles();
-            LoadChart(StreamFactory.GetSingleton(activity, accessToken).CreateStream(menuSelection));
+            Stream = StreamFactory.GetSingleton(activity, accessToken).CreateStream(menuSelection);
+            GetPeaksTitle(menuSelection);
+            LoadChart(Stream);
+            LoadLabels(Stream);
         }
 
         public void ApplyStyles()
@@ -41,9 +45,24 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
         }
 
-        public async void LoadChart(Task<Dictionary<int, long>> entries)
+        public void GetPeaksTitle(String menuSelection)
         {
-            foreach (KeyValuePair<int, long> entry in await entries)
+            switch (menuSelection)
+            {
+                case "Power": PeaksTitle.Text = "Power Peaks (W)";
+                    break;
+                case "Cadence": PeaksTitle.Text = "Cadence Peaks (RPM)";
+                    break;
+                case "Speed": PeaksTitle.Text = "Speed Peaks (MPH)";
+                    break;
+                default: PeaksTitle.Text = "Unavailable";
+                    break;
+            }
+        }
+
+        public async void LoadChart(Task<Dictionary<int, long>> stream)
+        {
+            foreach (KeyValuePair<int, long> entry in await stream)
             {
                 Entries.Add(new Entry(entry.Value)
                 {
@@ -58,6 +77,34 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 PointMode = PointMode.None,
                 PointSize = 1,
             };
+
+            MaxLabel.Text = (Stream.Result.Values.Max()).ToString();
+        }
+
+        public async void LoadLabels(Task<Dictionary<int, long>> stream)
+        {
+            TenSecLabel.Text = ((int)GetHighestSequenceXAverage(10, await stream)).ToString();
+            TwentySecLabel.Text = ((int)GetHighestSequenceXAverage(20, await stream)).ToString();
+            ThirtySecLabel.Text = ((int)GetHighestSequenceXAverage(30, await stream)).ToString();
+        }
+
+        public double GetHighestSequenceXAverage(int Seconds, Dictionary<int, long> Stream)
+        {
+            int Count = 0;
+            Dictionary<int, double> Averages = new Dictionary<int, double>();
+            for (int i = 0; i < ((Stream.Keys.Max()) / Seconds); i++)
+            {
+                Dictionary<int, long> XElements = new Dictionary<int, long>();
+                for (int s = 0; s < Seconds; s++)
+                {
+                    int key1 = Stream.ElementAt(Count + s).Key;
+                    XElements.Add(Stream.ElementAt(Count + s).Key, Stream.ElementAt(Count + s).Value);
+                }
+                Averages.Add(i, XElements.Values.Average());
+                XElements.Clear();
+                Count++;
+            }
+            return Averages.Values.Max();
         }
     }
 }

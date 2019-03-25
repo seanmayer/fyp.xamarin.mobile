@@ -18,29 +18,29 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="220" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Text="Power Peaks (W)" Grid.Row="1" Grid.Column="1" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                <Label x:Name="PeaksTitle" Text="Power Peaks (W)" Grid.Row="1" Grid.Column="1" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
 
                 <StackLayout Grid.Row="2" Grid.Column="1" x:Name="contentWrapper1" Orientation="Horizontal">
                     <Label Text="Max     "  BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
-                    <Label x:Name="MaxLabel" Text="2500" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label x:Name="MaxLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
                 </StackLayout>
 
                 <StackLayout Grid.Row="3" Grid.Column="1" x:Name="contentWrapper2" Orientation="Horizontal">
                     <Label Text="10 sec " BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
-                    <Label x:Name="TenSecLabel" Text="1800" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label x:Name="TenSecLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
                 </StackLayout>
 
                 <StackLayout Grid.Row="4" Grid.Column="1" x:Name="contentWrapper3" Orientation="Horizontal">
                     <Label Text="20 sec " BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
-                    <Label x:Name="TwentySecLabel" Text="1400" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label x:Name="TwentySecLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
                 </StackLayout>
 
                 <StackLayout Grid.Row="5" Grid.Column="1" x:Name="contentWrapper4" Orientation="Horizontal">
                     <Label Text="30 sec " BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
-                    <Label x:Name="ThirtySecLabel" Text="1000" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label x:Name="ThirtySecLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
                 </StackLayout>
             </Grid>
         </StackLayout>
