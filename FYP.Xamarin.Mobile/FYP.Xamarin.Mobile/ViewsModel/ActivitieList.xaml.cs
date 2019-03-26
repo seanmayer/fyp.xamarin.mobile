@@ -5,6 +5,7 @@ using FYP.Xamarin.Mobile.Services.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -46,11 +47,11 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             try
             {
                await activityServiceHandler.Create();
-               await DisplayAlert("Message", "Created Activities!", "OK");
+               //await DisplayAlert("Message", "Created Activities!", "OK");
             }
             catch (Exception e)
             {
-               await DisplayAlert("Error", e.ToString(), "OK");
+               //await DisplayAlert("Error", e.ToString(), "OK");
             }
             
         }
@@ -97,11 +98,16 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         public async void LoadAllCachedActivities()
         {
             Items.Clear();
+            
             foreach (var activity in await activityCacheHandler.FindAll())
             {
+                
+                DateTime dt = DateTime.ParseExact(activity.startDate, "ddd MMM dd HH:mm:ss 'GMT' yyyy", CultureInfo.InvariantCulture);
+                activity.label = dt.ToString("dd/MM/yyyy");
                 Items.Add(activity);
-                MyListView.ItemsSource = Items;
             }
+
+            MyListView.ItemsSource = Items;
         }
 
 

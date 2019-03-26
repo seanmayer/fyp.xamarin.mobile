@@ -35,6 +35,8 @@ namespace FYP.Xamarin.Mobile.Database.Model
 
         public string timeZone { get; set; }
 
+        public string label { get; set; }
+
         public override string ToString()
         {
             return activityId + " " + athleteId + " " + stravaid + " " + name + " " + startDate + " " + timeZone;

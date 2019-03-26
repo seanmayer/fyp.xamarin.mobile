@@ -2,11 +2,33 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FYP.Xamarin.Mobile.ViewsModel.ActivityAnaylsis"
-             xmlns:forms="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms">
+             xmlns:forms="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:forms1="clr-namespace:Lottie.Forms;assembly=Lottie.Forms">
 
     <ScrollView>
         <StackLayout Orientation="Vertical">
-            <forms:ChartView x:Name="Chart2" HeightRequest="266"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+
+                </Grid.ColumnDefinitions>
+
+                <forms1:AnimationView AutoPlay="True" Animation="40-loading.json" Loop="True"
+                             IsVisible="True"
+                             IsEnabled="True"
+                             IsPlaying="True"
+                             VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" 
+                             Grid.Row="0" Grid.Column="0" HeightRequest="266"/>
+
+                <forms:ChartView Grid.Row="0" Grid.Column="0" x:Name="Chart2" HeightRequest="266"/>
+            </Grid>
+            
+
+
+
             <Grid BackgroundColor="White">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="10" />
@@ -17,30 +39,37 @@
                     <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="220" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="290" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="PeaksTitle" Text="Power Peaks (W)" Grid.Row="1" Grid.Column="1" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
-
+                <Label x:Name="PeaksTitle" Text="Loading" Grid.Row="1" Grid.Column="1" BackgroundColor="White" FontSize="30" FontFamily="SF UI Text"/>
                 <StackLayout Grid.Row="2" Grid.Column="1" x:Name="contentWrapper1" Orientation="Horizontal">
                     <Label Text="Max     "  BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
-                    <Label x:Name="MaxLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label Text="                     "/>
+                    <Label x:Name="MaxLabel" Text="N/A" HorizontalTextAlignment="End" TextColor="Black" BackgroundColor="White" FontSize="30" FontFamily="SF UI Text"/>
+                    <Label x:Name="UnitsLabel1" Text="watts"/>
                 </StackLayout>
 
                 <StackLayout Grid.Row="3" Grid.Column="1" x:Name="contentWrapper2" Orientation="Horizontal">
-                    <Label Text="10 sec " BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
-                    <Label x:Name="TenSecLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label x:Name="TenSecLabelTitle" Text="10 sec " BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label Text="                     "/>
+                    <Label x:Name="TenSecLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="30" FontFamily="SF UI Text"/>
+                    <Label x:Name="UnitsLabel2" Text="watts"/>
                 </StackLayout>
 
                 <StackLayout Grid.Row="4" Grid.Column="1" x:Name="contentWrapper3" Orientation="Horizontal">
-                    <Label Text="20 sec " BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
-                    <Label x:Name="TwentySecLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label x:Name="TwentySecLabelTitle" Text="20 sec " BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label Text="                     "/>
+                    <Label x:Name="TwentySecLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="30" FontFamily="SF UI Text"/>
+                    <Label x:Name="UnitsLabel3" Text="watts"/>
                 </StackLayout>
 
                 <StackLayout Grid.Row="5" Grid.Column="1" x:Name="contentWrapper4" Orientation="Horizontal">
-                    <Label Text="30 sec " BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
-                    <Label x:Name="ThirtySecLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label x:Name="ThirtySecLabelTitle" Text="30 sec " BackgroundColor="White" FontSize="Large" FontFamily="SF UI Text"/>
+                    <Label Text="                     "/>
+                    <Label x:Name="ThirtySecLabel" Text="N/A" TextColor="Black" BackgroundColor="White" FontSize="30" FontFamily="SF UI Text"/>
+                    <Label x:Name="UnitsLabel4" Text="watts"/>
                 </StackLayout>
             </Grid>
         </StackLayout>

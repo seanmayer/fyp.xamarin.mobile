@@ -39,7 +39,7 @@
         Style="{StaticResource redButton}" />
             <Button Text = "Cadence" Grid.Row="1" Grid.Column="1"
         Style="{StaticResource greenButton}" />
-            <Button Text = "7" Grid.Row="2" Grid.Column="0"
+            <Button Text = "Speed" Grid.Row="2" Grid.Column="0"
         Style="{StaticResource blueButton}" />
         </Grid>
     </ContentPage.Content>

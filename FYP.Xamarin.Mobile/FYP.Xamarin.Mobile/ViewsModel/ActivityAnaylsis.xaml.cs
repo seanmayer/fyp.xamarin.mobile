@@ -1,22 +1,13 @@
 ﻿using Microcharts;
 using SkiaSharp;
-using Microcharts.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 using Xamarin.Forms.Xaml;
-using FYP.Xamarin.Mobile.Services.Model;
-using FYP.Xamarin.Mobile.Services;
-using FYP.Xamarin.Mobile.Database;
-using FYP.Xamarin.Mobile.ViewModels;
 using FYP.Xamarin.Mobile.Database.Model;
-using Newtonsoft.Json;
-using System.Collections.Concurrent;
-using FYP.Xamarin.Mobile.Streams;
 using FYP.Xamarin.Mobile.Streams.StreamFactory;
 
 namespace FYP.Xamarin.Mobile.ViewsModel
@@ -26,36 +17,63 @@ namespace FYP.Xamarin.Mobile.ViewsModel
     {
         private Task<Dictionary<int, long>> Stream;
         private List<Entry> Entries = new List<Entry>();
+        private String ChartColour;
+        private Activity Activity;
+        private string AccessToken;
+        private string MenuSelection;
 
         public ActivityAnaylsis(Activity activity, string accessToken, string menuSelection)
         {
-            InitializeComponent();
-            Title = menuSelection;
-            ApplyStyles();
-            Stream = StreamFactory.GetSingleton(activity, accessToken).CreateStream(menuSelection);
-            GetPeaksTitle(menuSelection);
+                InitializeComponent();
+                Title = menuSelection;
+                ApplyStyles();
+                this.Activity = activity;
+                this.MenuSelection = menuSelection;
+                this.AccessToken = accessToken;
+                LoadScreen();
+
+            TenSecLabelTitle.GestureRecognizers.Add(
+            new TapGestureRecognizer()
+            {
+                Command = new Command(() => {
+                    Navigation.PushAsync(new Loading());
+                })
+            }
+        );
+
+
+        }
+
+        public void LoadScreen()
+        {
+            GetCustomStyles(MenuSelection);
+            Stream = StreamFactory.GetSingleton(Activity, AccessToken).CreateStream(MenuSelection);
             LoadChart(Stream);
             LoadLabels(Stream);
         }
 
-        public void ApplyStyles()
+            public void ApplyStyles()
         {
             BackgroundColor = Color.FromHex("#1F2D44");
             ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#1F2D44");
             ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
         }
 
-        public void GetPeaksTitle(String menuSelection)
+        public void GetCustomStyles(String menuSelection)
         {
             switch (menuSelection)
             {
-                case "Power": PeaksTitle.Text = "Power Peaks (W)";
+                case "Power": PeaksTitle.Text = "Power Peaks "; UnitsLabel1.Text ="watts"; UnitsLabel2.Text = "watts"; UnitsLabel3.Text = "watts"; UnitsLabel4.Text = "watts";
+                    ChartColour = "#EC5D5D";
                     break;
-                case "Cadence": PeaksTitle.Text = "Cadence Peaks (RPM)";
+                case "Cadence": PeaksTitle.Text = "Cadence Peaks "; UnitsLabel1.Text = "rpm"; UnitsLabel2.Text = "rpm"; UnitsLabel3.Text = "rpm"; UnitsLabel4.Text = "rpm";
+                    ChartColour = "#A5C2A3";
                     break;
-                case "Speed": PeaksTitle.Text = "Speed Peaks (MPH)";
+                case "Speed": PeaksTitle.Text = "Speed Peaks "; UnitsLabel1.Text = "mph"; UnitsLabel2.Text = "mph"; UnitsLabel3.Text = "mph"; UnitsLabel4.Text = "mph";
+                    ChartColour = "#7EBDD1";
                     break;
-                default: PeaksTitle.Text = "Unavailable";
+                default: PeaksTitle.Text = "Unavailable"; UnitsLabel1.Text = "n/a"; UnitsLabel2.Text = "n/a"; UnitsLabel3.Text = "n/a"; UnitsLabel4.Text = "n/a";
+                    ChartColour = "#707070";
                     break;
             }
         }
@@ -66,7 +84,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             {
                 Entries.Add(new Entry(entry.Value)
                 {
-                    Color = SKColor.Parse("#00CED1"),
+                    Color = SKColor.Parse(ChartColour),
                 });
             }
             Chart2.Chart = new LineChart()
@@ -78,14 +96,24 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 PointSize = 1,
             };
 
-            MaxLabel.Text = (Stream.Result.Values.Max()).ToString();
+           
         }
 
         public async void LoadLabels(Task<Dictionary<int, long>> stream)
         {
-            TenSecLabel.Text = ((int)GetHighestSequenceXAverage(10, await stream)).ToString();
-            TwentySecLabel.Text = ((int)GetHighestSequenceXAverage(20, await stream)).ToString();
-            ThirtySecLabel.Text = ((int)GetHighestSequenceXAverage(30, await stream)).ToString();
+            Dictionary<int, long> loadStream = await stream;
+            if(loadStream.Count != 0)
+            { 
+                MaxLabel.Text = loadStream.Values.Max().ToString();
+                TenSecLabel.Text = ((int)GetHighestSequenceXAverage(10, loadStream)).ToString();
+                TwentySecLabel.Text = ((int)GetHighestSequenceXAverage(20, loadStream)).ToString();
+                ThirtySecLabel.Text = ((int)GetHighestSequenceXAverage(30, loadStream)).ToString();
+            }
+            else
+            {
+                await DisplayAlert("Oops", "No data logged!", "OK");
+                await Navigation.PushAsync(new ActivityMenu((Activity)Activity, AccessToken));
+            }
         }
 
         public double GetHighestSequenceXAverage(int Seconds, Dictionary<int, long> Stream)

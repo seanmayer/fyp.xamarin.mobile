@@ -20,7 +20,7 @@
                     <Image Source="scp_signup.png" WidthRequest="206" HeightRequest="28" />
                 </StackLayout>
 
-                <Entry Grid.Row="1" x:Name="username" Placeholder="Username" PlaceholderColor="#A2A2A2" FontSize="16" />
+                <Entry Grid.Row="1" x:Name="username" Placeholder="Usernam" PlaceholderColor="#A2A2A2" FontSize="16" />
                 <Entry Grid.Row="2" x:Name="password" Placeholder="Password" IsPassword="True" PlaceholderColor="#A2A2A2" FontSize="16" />
                 <Entry Grid.Row="3" x:Name="confirmPassword" Placeholder="Confirm Password" IsPassword="True" PlaceholderColor="#A2A2A2" FontSize="16" />
                 <Entry Grid.Row="4" x:Name="stravaId" Placeholder="Strava ID" PlaceholderColor="#A2A2A2" FontSize="16" Text="35193560"/>

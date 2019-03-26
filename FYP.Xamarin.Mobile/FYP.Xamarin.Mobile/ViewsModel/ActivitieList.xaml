@@ -7,9 +7,18 @@
             ItemTapped="Handle_ItemTapped"
             CachingStrategy="RecycleElement">
 
-        <ListView.ItemTemplate>
+        <ListView.ItemTemplate RowHeight = "200">
             <DataTemplate>
-                <TextCell Text="{Binding name}" />
+                <ViewCell>
+
+                    <StackLayout x:Name="listItemViewCell" Orientation="Horizontal">
+                        <Image HeightRequest="75" WidthRequest="75" Source="scp_generic_icon.png" />
+                        <StackLayout Orientation="Vertical">
+                            <Label FontSize="2"  x:Name="ItemNameLabel1" Text=""/>
+                            <Label FontSize="18"  x:Name="ItemNameLabel2" Text="{Binding label}"/>
+                        </StackLayout>
+                    </StackLayout>
+                </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>

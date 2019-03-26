@@ -62,7 +62,9 @@ namespace FYP.Xamarin.Mobile.Database
         public async Task<List<Activity>> FindAll()
         {
             List<Activity> myList = await activityDbHandler.Get<Activity>();
-            return myList.FindAll(p => p.athleteId == AthleteId);
+            myList = myList.FindAll(p => p.athleteId == AthleteId);
+            myList.Reverse();
+            return myList;
         }
 
     }

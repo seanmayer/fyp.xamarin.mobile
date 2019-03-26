@@ -58,7 +58,7 @@ namespace FYP.Xamarin.Mobile
             else
             {
                 credentials = cred;
-                await DisplayAlert("Message", "Successful!", "OK");
+                //await DisplayAlert("Message", "Successful!", "OK");
                 return true;
             }
         }
