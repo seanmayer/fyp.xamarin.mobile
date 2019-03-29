@@ -10,11 +10,12 @@ using Xamarin.Forms;
 
 namespace FYP.Xamarin.Mobile
 {
-    public partial class Login : ContentPage
+    public partial class Login : MasterDetailPage
     {
         private CredentialsCacheHandler credentialsCacheHandler;
         private AthleteCacheHandler athleteCacheHandler;
         private Credentials credentials;
+        private Athlete athlete;
 
         public Login()
         {
@@ -22,6 +23,59 @@ namespace FYP.Xamarin.Mobile
             NavigationPage.SetHasNavigationBar(this, false);
             credentialsCacheHandler = new CredentialsCacheHandler();
             athleteCacheHandler = new AthleteCacheHandler();
+            IsGestureEnabled = false;
+            InitilizeTapGestures();
+        }
+
+        private void InitilizeTapGestures()
+        {
+            ActivitiesList_Label.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() => {
+                    Detail = new NavigationPage(new ActivitieList(athlete.AthleteId.ToString(), athlete.StravaId, athlete.AccessToken));
+                    ActivitiesList_Label.TextColor = Color.FromHex("#4285F4");
+                    Trends_Label.TextColor = Color.FromHex("#000000");
+                    Leaderboard_Label.TextColor = Color.FromHex("#000000");
+                    Alerts_Label.TextColor = Color.FromHex("#000000");
+                })
+            }
+);
+
+            Trends_Label.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() => {
+                    Detail = new NavigationPage(new TrendMenu());
+                    Trends_Label.TextColor = Color.FromHex("#4285F4");
+                    ActivitiesList_Label.TextColor = Color.FromHex("#000000");
+                    Leaderboard_Label.TextColor = Color.FromHex("#000000");
+                    Alerts_Label.TextColor = Color.FromHex("#000000");
+                })
+            }
+            );
+
+            Leaderboard_Label.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() => {
+                    Detail = new NavigationPage(new LeaderboardMenu());
+                    Leaderboard_Label.TextColor = Color.FromHex("#4285F4");
+                    Trends_Label.TextColor = Color.FromHex("#000000");
+                    ActivitiesList_Label.TextColor = Color.FromHex("#000000");
+                    Alerts_Label.TextColor = Color.FromHex("#000000");
+                })
+            }
+            );
+
+            Alerts_Label.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() => {
+                    Detail = new NavigationPage(new Alerts());
+                    Alerts_Label.TextColor = Color.FromHex("#4285F4");
+                    Trends_Label.TextColor = Color.FromHex("#000000");
+                    ActivitiesList_Label.TextColor = Color.FromHex("#000000");
+                    Leaderboard_Label.TextColor = Color.FromHex("#000000");
+                })
+            }
+            );
         }
 
         private void Signup_Clicked(object sender, EventArgs e)
@@ -35,8 +89,9 @@ namespace FYP.Xamarin.Mobile
             if (await isValid)
             {
                 Athlete athlete = await athleteCacheHandler.Find(credentials.CredentialsId);
-                Navigation.InsertPageBefore(new ActivitieList(athlete.AthleteId.ToString(), athlete.StravaId.ToString(), athlete.AccessToken.ToString()), this);
-                await Navigation.PopAsync();
+                this.athlete = athlete;
+                IsGestureEnabled = true;
+                Detail = new NavigationPage(new ActivitieList(athlete.AthleteId.ToString(), athlete.StravaId, athlete.AccessToken));
             }
             else
             {
@@ -62,6 +117,7 @@ namespace FYP.Xamarin.Mobile
                 return true;
             }
         }
+
 
     }
 }

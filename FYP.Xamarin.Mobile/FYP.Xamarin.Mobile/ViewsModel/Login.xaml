@@ -1,53 +1,107 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:FYP.Xamarin.Mobile"
              xmlns:Renders="clr-namespace:FYP.Xamarin.Mobile.Droid.Renders"
              x:Class="FYP.Xamarin.Mobile.Login">
 
 
-    <ContentPage.Content>
-        
-        
-        <Renders:GradientLayout ColorsList="#1F2D44,#3A4A64" Mode="ToLeft">
+    <MasterDetailPage.Master>
 
 
-
-
-            <Grid BackgroundColor="#3A4A64">
-                <Grid Margin="20,20,20,20">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="200"/>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="50"/>
-                    </Grid.RowDefinitions>
-
-                    <StackLayout >
-                        <Image Source="scp_logo.png" WidthRequest="127" HeightRequest="127"/>
-                        <Image Source="scp_title.png" WidthRequest="206" HeightRequest="28" />
-
+        <ContentPage  BackgroundColor="#616161" Title="Master">
+            <Grid BackgroundColor="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="172" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Image Source="" Aspect="AspectFill" />
+                    <StackLayout Padding="20,20,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand">
+                        <Image Source="scp_user_icon.png" HeightRequest="85"  HorizontalOptions="StartAndExpand"/>
+                        <StackLayout Padding="10,30">
+                            <Label Text="Menu" TextColor="White" FontSize="Large" />
+                        </StackLayout>
+                        
                     </StackLayout>
-
-
-
-                    <Entry Grid.Row="1"  TextColor="White" x:Name="username" Text="sean.mayer1" Placeholder="Username" PlaceholderColor="#A2A2A2" FontSize="16" />
-                    <Entry Grid.Row="2" TextColor="White" x:Name="password" Text="password" Placeholder="Password" IsPassword="True" PlaceholderColor="#A2A2A2" FontSize="16" />
-                    <Button Text="LogIn" BackgroundColor="#0EBFD5" TextColor="White" HeightRequest="50" VerticalOptions="Start" Grid.Row="3" Clicked="Login_Clicked" />
-
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Grid.Row="5">
-                        <Label Text="Forgot Password?" TextColor="#A2A2A2"  />
-                    </StackLayout>
-
-                    <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Grid.Row="6">
-                        <Label Text="Dont have an Account?" TextColor="#A2A2A2"  />
-                        <Button Text="SIGN UP" TextColor="#FFFFFF" BorderColor="Transparent" BackgroundColor="Transparent"  HeightRequest="50" VerticalOptions="Start" Grid.Row="3" Clicked="Signup_Clicked" />
-                    </StackLayout>
-                    
-                    
                 </Grid>
-            </Grid>
-        </Renders:GradientLayout>
-    </ContentPage.Content>
+                <StackLayout Margin="0,20,0,0" Grid.Row="1" BackgroundColor="#FAFAFA">
 
-</ContentPage>
+                    <StackLayout  Padding="20,5"  Orientation="Horizontal">
+                            <Image Source="scp_logo.png" HeightRequest="50"/>
+                        <StackLayout  Padding="15,18,0,0">
+                            <Label FontSize="18" TextColor="#4285F4" x:Name="ActivitiesList_Label" Text="Recent"/>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout  Padding="20,5"  Orientation="Horizontal">
+                        <Image Source="scp_logo.png" HeightRequest="50"/>
+                        <StackLayout  Padding="15,18,0,0">
+                            <Label FontSize="18" TextColor="#000000" x:Name="Trends_Label" Text="Trends"/>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout  Padding="20,5"  Orientation="Horizontal">
+                        <Image Source="scp_logo.png" HeightRequest="50"/>
+                        <StackLayout  Padding="15,18,0,0">
+                            <Label FontSize="18" TextColor="#000000" x:Name="Leaderboard_Label" Text="Leaderboard"/>
+                        </StackLayout>
+                    </StackLayout>
+                    
+                    <StackLayout  Padding="20,5"  Orientation="Horizontal">
+                        <Image Source="scp_logo.png" HeightRequest="50"/>
+                        <StackLayout  Padding="15,18,0,0">
+                            <Label FontSize="18" TextColor="#000000" x:Name="Alerts_Label" Text="Alerts"/>
+                        </StackLayout>
+                    </StackLayout>
+
+                </StackLayout>
+
+
+
+            </Grid>
+        </ContentPage>
+    </MasterDetailPage.Master>
+
+
+    <MasterDetailPage.Detail>
+        <ContentPage >
+            <Renders:GradientLayout ColorsList="#1F2D44,#3A4A64" Mode="ToLeft">
+                <Grid BackgroundColor="#3A4A64">
+                    <Grid Margin="20,20,20,20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="200"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+
+                        <StackLayout >
+                            <Image Source="scp_logo.png" WidthRequest="127" HeightRequest="127"/>
+                            <Image Source="scp_title.png" WidthRequest="206" HeightRequest="28" />
+
+                        </StackLayout>
+
+                        <Entry Grid.Row="1"  TextColor="White" x:Name="username" Text="sean.mayer1" Placeholder="Username" PlaceholderColor="#A2A2A2" FontSize="16" />
+                        <Entry Grid.Row="2" TextColor="White" x:Name="password" Text="password" Placeholder="Password" IsPassword="True" PlaceholderColor="#A2A2A2" FontSize="16" />
+                        <Button Text="LogIn" BackgroundColor="#0EBFD5" TextColor="White" HeightRequest="50" VerticalOptions="Start" Grid.Row="3" Clicked="Login_Clicked" />
+
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Grid.Row="5">
+                            <Label Text="Forgot Password?" TextColor="#A2A2A2"  />
+                        </StackLayout>
+
+                        <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Grid.Row="6">
+                            <Label Text="Dont have an Account?" TextColor="#A2A2A2"  />
+                            <Button Text="SIGN UP" TextColor="#FFFFFF" BorderColor="Transparent" BackgroundColor="Transparent"  HeightRequest="50" VerticalOptions="Start" Grid.Row="3" Clicked="Signup_Clicked" />
+                        </StackLayout>
+                    </Grid>
+                </Grid>
+            </Renders:GradientLayout>
+        </ContentPage>
+    </MasterDetailPage.Detail>
+
+
+    
+    
+
+</MasterDetailPage>

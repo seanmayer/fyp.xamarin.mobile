@@ -9,6 +9,7 @@ using Entry = Microcharts.Entry;
 using Xamarin.Forms.Xaml;
 using FYP.Xamarin.Mobile.Database.Model;
 using FYP.Xamarin.Mobile.Streams.StreamFactory;
+using System.Collections.Concurrent;
 
 namespace FYP.Xamarin.Mobile.ViewsModel
 {
@@ -80,6 +81,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
 
         public async void LoadChart(Task<Dictionary<int, long>> stream)
         {
+
             foreach (KeyValuePair<int, long> entry in await stream)
             {
                 Entries.Add(new Entry(entry.Value)
@@ -87,6 +89,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                     Color = SKColor.Parse(ChartColour),
                 });
             }
+
             Chart2.Chart = new LineChart()
             {
                 Entries = Entries,
@@ -96,7 +99,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 PointSize = 1,
             };
 
-           
+
         }
 
         public async void LoadLabels(Task<Dictionary<int, long>> stream)

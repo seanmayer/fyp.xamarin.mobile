@@ -20,11 +20,12 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         public ObservableCollection<Activity> Items { get; set; }
         public string AccessToken;
 
+
         public ActivitieList(string athleteId, string stravaId, string accessToken)
         {
             InitializeComponent();
-            Title = "Recent Rides";
             ApplyStyles();
+            NavigationPage.SetHasNavigationBar(this, true);
             this.AccessToken = accessToken;
             activityServiceHandler = new ActivityServiceHandler();
             activityCacheHandler = new ActivityCacheHandler();
@@ -101,10 +102,17 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             
             foreach (var activity in await activityCacheHandler.FindAll())
             {
-                
-                DateTime dt = DateTime.ParseExact(activity.startDate, "ddd MMM dd HH:mm:ss 'GMT' yyyy", CultureInfo.InvariantCulture);
-                activity.label = dt.ToString("dd/MM/yyyy");
-                Items.Add(activity);
+                try
+                { 
+                    DateTime dt = DateTime.ParseExact(activity.startDate, "ddd MMM dd HH:mm:ss 'GMT' yyyy", CultureInfo.InvariantCulture);
+                    activity.label = dt.ToString("dd/MM/yyyy");
+                    Items.Add(activity);
+                }
+                catch(Exception e)
+                {
+                    activity.label = activity.name;
+                    Items.Add(activity);
+                }
             }
 
             MyListView.ItemsSource = Items;

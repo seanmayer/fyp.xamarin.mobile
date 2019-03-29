@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FYP.Xamarin.Mobile.ViewsModel.TrendMenu"
+             Title="Trends">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="redButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#EC5D5D"/>
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius" Value="5"/>
+                <Setter Property="FontSize" Value="30" />
+            </Style>
+            <Style x:Key="greenButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#A5C2A3"/>
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius" Value="5"/>
+                <Setter Property="FontSize" Value="30" />
+            </Style>
+            <Style x:Key="blueButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#7EBDD1"/>
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius" Value="5"/>
+                <Setter Property="FontSize" Value="30" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid x:Name="controlGrid" RowSpacing="15" ColumnSpacing="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Text = "Power" Grid.Row="1" Grid.Column="0"
+        Style="{StaticResource redButton}" />
+            <Button Text = "Cadence" Grid.Row="1" Grid.Column="1"
+        Style="{StaticResource greenButton}" />
+            <Button Text = "Speed" Grid.Row="2" Grid.Column="0"
+        Style="{StaticResource blueButton}" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
