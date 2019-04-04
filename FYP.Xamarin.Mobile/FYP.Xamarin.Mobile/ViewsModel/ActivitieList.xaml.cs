@@ -15,6 +15,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ActivitieList : ContentPage
     {
+        private ActivitySummaryServiceHandler activitySummaryServiceHandler;
         private ActivityServiceHandler activityServiceHandler;
         private ActivityCacheHandler activityCacheHandler;
         public ObservableCollection<Activity> Items { get; set; }
@@ -27,9 +28,11 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             ApplyStyles();
             NavigationPage.SetHasNavigationBar(this, true);
             this.AccessToken = accessToken;
+            activitySummaryServiceHandler = new ActivitySummaryServiceHandler();
             activityServiceHandler = new ActivityServiceHandler();
             activityCacheHandler = new ActivityCacheHandler();
             Items = new ObservableCollection<Activity> {};
+            activitySummaryServiceHandler.Init(stravaId, accessToken);
             activityServiceHandler.Init(athleteId, stravaId, accessToken);
             activityCacheHandler.Init(Int64.Parse(athleteId));
             SyncCachedActivities();
@@ -48,6 +51,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             try
             {
                await activityServiceHandler.Create();
+               await activitySummaryServiceHandler.Create();
                //await DisplayAlert("Message", "Created Activities!", "OK");
             }
             catch (Exception e)
@@ -99,7 +103,8 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         public async void LoadAllCachedActivities()
         {
             Items.Clear();
-            
+
+            int count = 1;
             foreach (var activity in await activityCacheHandler.FindAll())
             {
                 try
@@ -107,6 +112,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                     DateTime dt = DateTime.ParseExact(activity.startDate, "ddd MMM dd HH:mm:ss 'GMT' yyyy", CultureInfo.InvariantCulture);
                     activity.label = dt.ToString("dd/MM/yyyy");
                     Items.Add(activity);
+                    count++;
                 }
                 catch(Exception e)
                 {
