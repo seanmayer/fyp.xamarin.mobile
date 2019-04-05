@@ -8,7 +8,7 @@ namespace FYP.Xamarin.Mobile.Services.Model
     {
         public long activitySummaryId { get; set; }
 
-        public ActivityId athleteId { get; set; }
+        public ActivityId activityId { get; set; }
 
         public string kilojoules { get; set; }
         public string averageCadence { get; set; }

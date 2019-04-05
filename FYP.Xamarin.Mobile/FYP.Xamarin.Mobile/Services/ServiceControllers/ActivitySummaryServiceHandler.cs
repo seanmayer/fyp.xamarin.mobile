@@ -13,24 +13,16 @@ namespace FYP.Xamarin.Mobile.Services
 {
     public class ActivitySummaryServiceHandler : IServerServices<ActivitySummaryRootObject>
     {
-        private string ActivityId;
+        private string AthleteId;
         private string StravaId;
         private string AccessToken;
 
         public List<ActivityRootObject> ActvityList { get; set; }
 
 
-
-        public void Init(string activityId, string stravaId, string accessToken)
+        public void Init(string athleteId, string stravaId, string accessToken)
         {
-            ActivityId = activityId;
-            StravaId = stravaId;
-            AccessToken = accessToken;
-        }
-
-        public void Init(string stravaId, string accessToken)
-        {
-            
+            AthleteId = athleteId;
             StravaId = stravaId;
             AccessToken = accessToken;
         }
@@ -77,9 +69,10 @@ namespace FYP.Xamarin.Mobile.Services
 
         public async Task<List<ActivitySummaryRootObject>> FindAll()
         {
+
             var client = new HttpClient
             {
-                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().CREATE_ACTIVITYSUMMARY + "?activityId="+ ActivityId)
+                BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().LIST_ACTIVITYSUMMARY + "?athleteId="+ AthleteId)
             };
             HttpResponseMessage response = await client.GetAsync("");
 

@@ -18,6 +18,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         private ActivitySummaryServiceHandler activitySummaryServiceHandler;
         private ActivityServiceHandler activityServiceHandler;
         private ActivityCacheHandler activityCacheHandler;
+        private ActivitySummaryCacheHandler activitySummaryCacheHandler;
         public ObservableCollection<Activity> Items { get; set; }
         public string AccessToken;
 
@@ -28,15 +29,22 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             ApplyStyles();
             NavigationPage.SetHasNavigationBar(this, true);
             this.AccessToken = accessToken;
+            Items = new ObservableCollection<Activity> {};
+            InitliseServiceAndCache(athleteId, stravaId, accessToken);
+            SyncCachedActivities();
+            SyncCachedActivitySummaries();
+            LoadAllCachedActivities();
+        }
+
+        public void InitliseServiceAndCache(string athleteId, string stravaId, string accessToken)
+        {
             activitySummaryServiceHandler = new ActivitySummaryServiceHandler();
+            activitySummaryCacheHandler = new ActivitySummaryCacheHandler();
             activityServiceHandler = new ActivityServiceHandler();
             activityCacheHandler = new ActivityCacheHandler();
-            Items = new ObservableCollection<Activity> {};
-            activitySummaryServiceHandler.Init(stravaId, accessToken);
+            activitySummaryServiceHandler.Init(athleteId, stravaId, accessToken);
             activityServiceHandler.Init(athleteId, stravaId, accessToken);
             activityCacheHandler.Init(Int64.Parse(athleteId));
-            SyncCachedActivities();
-            LoadAllCachedActivities();
         }
 
         public void ApplyStyles()
@@ -51,14 +59,24 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             try
             {
                await activityServiceHandler.Create();
-               await activitySummaryServiceHandler.Create();
-               //await DisplayAlert("Message", "Created Activities!", "OK");
             }
             catch (Exception e)
             {
-               //await DisplayAlert("Error", e.ToString(), "OK");
             }
             
+        }
+
+
+        public async Task CreateActivitySummaries()
+        {
+            try
+            {
+                await activitySummaryServiceHandler.Create();
+            }
+            catch (Exception e)
+            {
+            }
+
         }
 
         public async Task<List<ActivityRootObject>> FindAllActivities()
@@ -75,6 +93,20 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             }
         }
 
+        public async Task<List<ActivitySummaryRootObject>> FindAllActivitySummaries()
+        {
+            try
+            {
+                List<Services.Model.ActivitySummaryRootObject> x = await activitySummaryServiceHandler.FindAll();
+                return x;
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Offline", "Unable to reach server" + e, "OK");
+                return null;
+            }
+        }
+
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null)
@@ -82,6 +114,26 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             await Navigation.PushAsync(new ActivityMenu((Activity)e.Item, AccessToken));
             ((ListView)sender).SelectedItem = null;//Deselect Item
         }
+
+        public async void SyncCachedActivitySummaries()
+        {
+            try
+            {
+                await CreateActivitySummaries();
+
+                foreach (var activitySummary in await FindAllActivitySummaries())
+                {
+                    activitySummaryCacheHandler.Init(activitySummary.activitySummaryId, activitySummary.movingTime, activitySummary.distance,activitySummary.maxSpeed, activitySummary.maxWatts,activitySummary.averageSpeed, activitySummary.averageWatts,activitySummary.averageCadence, activitySummary.kilojoules, activitySummary.activityId.activityId);
+                    await activitySummaryCacheHandler.Create();
+                }
+
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("Error", "Sync Failure" + e, "OK");
+            }
+        }
+
 
         public async void SyncCachedActivities()
         {
@@ -103,16 +155,13 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         public async void LoadAllCachedActivities()
         {
             Items.Clear();
-
-            int count = 1;
             foreach (var activity in await activityCacheHandler.FindAll())
             {
                 try
                 { 
-                    DateTime dt = DateTime.ParseExact(activity.startDate, "ddd MMM dd HH:mm:ss 'GMT' yyyy", CultureInfo.InvariantCulture);
-                    activity.label = dt.ToString("dd/MM/yyyy");
+                    ActivitySummary activitySummary = await activitySummaryCacheHandler.Find(activity.activityId);
+                    activity.label = DateTime.ParseExact(activity.startDate, "ddd MMM dd HH:mm:ss 'GMT' yyyy", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy") + " : " +TimeSpan.FromSeconds(Convert.ToDouble(activitySummary.movingTime)).ToString(@"hh\:mm\:ss\:fff");
                     Items.Add(activity);
-                    count++;
                 }
                 catch(Exception e)
                 {

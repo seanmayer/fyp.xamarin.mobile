@@ -28,6 +28,7 @@ namespace FYP.Xamarin.Mobile.Database
             //db.ExecuteAsync("DELETE FROM Athlete");
             //db.ExecuteAsync("DELETE FROM Activity");
             //db.ExecuteAsync("DELETE FROM Power");
+            //db.ExecuteAsync("DELETE FROM ActivitySummary");
         }
 
         public AsyncTableQuery<T> AsQueryable() =>
