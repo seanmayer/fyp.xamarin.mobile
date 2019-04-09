@@ -1,23 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:forms1="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="FYP.Xamarin.Mobile.ViewsModel.ActivitieList"
              Title="Recent Rides">
+    
     <ListView x:Name="MyListView"
             ItemsSource="{Binding Items}"
             ItemTapped="Handle_ItemTapped"
             CachingStrategy="RecycleElement"
-                  Grid.Row="0" Grid.Column="0">
-        <ListView.ItemTemplate RowHeight = "200">
+            HasUnevenRows="true">
+        
+        <ListView.ItemTemplate >
+
             <DataTemplate>
+                
                 <ViewCell>
-                    <StackLayout x:Name="listItemViewCell" Orientation="Horizontal">
-                        <Image HeightRequest="75" WidthRequest="75" Source="scp_generic_icon.png" />
-                        <StackLayout Orientation="Vertical">
-                            <Label FontSize="2"  x:Name="ItemNameLabel1" Text=""/>
-                            <Label FontSize="18"  x:Name="ItemNameLabel2" Text="{Binding label}"/>
-                        </StackLayout>
-                    </StackLayout>
+                    <ContentView x:Name="listItemViewCell">
+                        <Grid  Margin="10" BackgroundColor="White">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Image HeightRequest="75" WidthRequest="75" Source="scp_generic_icon.png" />
+
+                            <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                <Label Text="{Binding label1}" FontSize="18" />
+                                <Label Text="{Binding label2}" FontSize="Small" TextColor="Accent" />
+                            </StackLayout>
+                        </Grid>
+                    </ContentView>
+
                 </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>

@@ -35,7 +35,8 @@ namespace FYP.Xamarin.Mobile.Database.Model
 
         public string timeZone { get; set; }
 
-        public string label { get; set; }
+        public string label1 { get; set; }
+        public string label2 { get; set; }
 
         public override string ToString()
         {

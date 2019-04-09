@@ -160,12 +160,15 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 try
                 { 
                     ActivitySummary activitySummary = await activitySummaryCacheHandler.Find(activity.activityId);
-                    activity.label = DateTime.ParseExact(activity.startDate, "ddd MMM dd HH:mm:ss 'GMT' yyyy", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy") + " : " +TimeSpan.FromSeconds(Convert.ToDouble(activitySummary.movingTime)).ToString(@"hh\:mm\:ss\:fff");
+                    activity.label1 = DateTime.ParseExact(activity.startDate, "ddd MMM dd HH:mm:ss 'GMT' yyyy", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
+                    activity.label2 = TimeSpan.FromSeconds(Convert.ToDouble(activitySummary.movingTime)).ToString(@"hh\:mm\:ss\:fff");
                     Items.Add(activity);
                 }
                 catch(Exception e)
                 {
-                    activity.label = activity.name;
+                    ActivitySummary activitySummary = await activitySummaryCacheHandler.Find(activity.activityId);
+                    activity.label1 = activity.name;
+                    activity.label2 = TimeSpan.FromSeconds(Convert.ToDouble(activitySummary.movingTime)).ToString(@"hh\:mm\:ss\:fff");
                     Items.Add(activity);
                 }
             }
