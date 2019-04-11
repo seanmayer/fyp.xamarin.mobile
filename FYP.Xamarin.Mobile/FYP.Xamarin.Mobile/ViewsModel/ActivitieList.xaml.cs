@@ -62,6 +62,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             }
             catch (Exception e)
             {
+                await DisplayAlert("Offline", "CreateActivites" + e, "OK");
             }
             
         }
@@ -75,6 +76,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             }
             catch (Exception e)
             {
+                await DisplayAlert("Offline", "CreateActivitySummaries" + e, "OK");
             }
 
         }

@@ -12,8 +12,8 @@ namespace FYP.Xamarin.Tests
             if (platform == Platform.Android)
             {
                 return ConfigureApp.Android
-                    .InstalledApp(@"Z:\\Desktop\\FYP.Xamarin.Mobile\\fyp.xamarin.mobile\\FYP.Xamarin.Mobile\\FYP.Xamarin.Mobile.Android\\bin\\Debug\\com.companyname.FYP.Xamarin.Mobile.Android.apk")
-                    .DeviceSerial("3063QH3001014002")
+                    .ApkFile("Z:/Desktop/FYP.Xamarin.Mobile/fyp.xamarin.mobile/FYP.Xamarin.Mobile/FYP.Xamarin.Mobile.Android/bin/Release/com.companyname.FYP.Xamarin.Mobile.Android.apk")
+                    .DeviceSerial("3063QH3001014002")//3063QH3001014002//emulator-5554
                     .PreferIdeSettings()
                     .EnableLocalScreenshots()
                     .StartApp();
