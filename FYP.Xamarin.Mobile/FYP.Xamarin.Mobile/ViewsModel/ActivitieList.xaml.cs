@@ -34,6 +34,8 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             SyncCachedActivities();
             SyncCachedActivitySummaries();
             LoadAllCachedActivities();
+
+            
         }
 
         public void InitliseServiceAndCache(string athleteId, string stravaId, string accessToken)
@@ -52,6 +54,18 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             NavigationPage.SetHasBackButton(this, false);
             ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#1F2D44");
             ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
+        }
+
+        void OnSwiped(object sender, SwipedEventArgs e)
+        {
+            switch (e.Direction)
+            {
+                case SwipeDirection.Down:
+
+                    MyListView.BackgroundColor = Color.Default;
+                    LoadAllCachedActivities();
+                    break;
+            }
         }
 
         public async Task CreateActivites()
@@ -152,11 +166,15 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             {
                 await DisplayAlert("Error", "Sync Failure", "OK");
             }
+
+
         }
 
         public async void LoadAllCachedActivities()
         {
             Items.Clear();
+            await Task.Delay(5000);
+            MyListView.BackgroundColor = Color.FromHex("#ffffff");
             foreach (var activity in await activityCacheHandler.FindAll())
             {
                 try
@@ -168,9 +186,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 }
                 catch(Exception e)
                 {
-                    ActivitySummary activitySummary = await activitySummaryCacheHandler.Find(activity.activityId);
                     activity.label1 = activity.name;
-                    activity.label2 = TimeSpan.FromSeconds(Convert.ToDouble(activitySummary.movingTime)).ToString(@"hh\:mm\:ss\:fff");
                     Items.Add(activity);
                 }
             }

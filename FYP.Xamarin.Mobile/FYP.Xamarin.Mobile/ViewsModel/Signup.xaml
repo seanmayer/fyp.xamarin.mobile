@@ -20,11 +20,11 @@
                     <Image Source="scp_signup.png" WidthRequest="206" HeightRequest="28" />
                 </StackLayout>
 
-                <Entry Grid.Row="1" x:Name="username" Placeholder="Usernam" PlaceholderColor="#A2A2A2" FontSize="16" />
-                <Entry Grid.Row="2" x:Name="password" Placeholder="Password" IsPassword="True" PlaceholderColor="#A2A2A2" FontSize="16" />
-                <Entry Grid.Row="3" x:Name="confirmPassword" Placeholder="Confirm Password" IsPassword="True" PlaceholderColor="#A2A2A2" FontSize="16" />
-                <Entry Grid.Row="4" x:Name="stravaId" Placeholder="Strava ID" PlaceholderColor="#A2A2A2" FontSize="16" Text="35193560"/>
-                <Entry Grid.Row="5" x:Name="stravaApiKey" Placeholder="Strava API Key" Text="e8a14408cd001cb6a86607a21ff50bd42f0b76f8" PlaceholderColor="#A2A2A2" FontSize="16" />
+                <Entry Grid.Row="1" x:Name="username" TextColor="White" Text="sean.mayer1" Placeholder="Username" PlaceholderColor="#A2A2A2" FontSize="16" />
+                <Entry Grid.Row="2" x:Name="password" TextColor="White" Text="password" Placeholder="Password" IsPassword="True" PlaceholderColor="#A2A2A2" FontSize="16" />
+                <Entry Grid.Row="3" x:Name="confirmPassword" TextColor="White" Text="password" Placeholder="Confirm Password" IsPassword="True" PlaceholderColor="#A2A2A2" FontSize="16" />
+                <Entry Grid.Row="4" x:Name="stravaId" TextColor="White" Placeholder="Strava ID" PlaceholderColor="#A2A2A2" FontSize="16" Text="35193560"/>
+                <Entry Grid.Row="5" x:Name="stravaApiKey" TextColor="White" Placeholder="Strava API Key" Text="e8a14408cd001cb6a86607a21ff50bd42f0b76f8" PlaceholderColor="#A2A2A2" FontSize="16" />
 
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Grid.Row="7">
                     <AbsoluteLayout>

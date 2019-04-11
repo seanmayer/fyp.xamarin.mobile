@@ -52,6 +52,8 @@ namespace FYP.Xamarin.Mobile.Services
 
         public async Task<bool> Create()
         {
+            string test = RequestFactory.RequestFactory.GetSingleton().CREATE_ACTIVITIES + "?athleteId=" + AthleteId + "&stravaId=" + StravaId + "&accessToken=" + AccessToken;
+
             var client = new HttpClient
             {
                 BaseAddress = new Uri(RequestFactory.RequestFactory.GetSingleton().CREATE_ACTIVITIES + "?athleteId="+ AthleteId +"&stravaId="+StravaId+"&accessToken="+AccessToken)

@@ -59,7 +59,7 @@ namespace FYP.Xamarin.Mobile.Services.RequestFactory
         }
         public string CREATE_ACTIVITIES
         {
-                get => SERVICE_PACKAGE + CredentialRequest.MakeCreateRequest();
+                get => SERVICE_PACKAGE + ActivityRequest.MakeCreateRequest();
         }
         public string LIST_ACTIVITIES
         {

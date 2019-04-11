@@ -15,20 +15,22 @@ namespace FYP.Xamarin.Mobile.Database
 
         public CacheManager()
         {
-            var dbPath = DependencyService.Get<IFileHelper>().GetLocalFilePath("SCP_Databasev1.db3.db3");
+            var dbPath = DependencyService.Get<IFileHelper>().GetLocalFilePath("SCP_DatabaseProd2.db3.db3");
             db = new SQLiteAsyncConnection(dbPath);
             db.CreateTableAsync<T>().Wait();
-            ClearTables();
+            //ClearTables();
 
         }
 
         public void ClearTables()
         {
-            //db.ExecuteAsync("DELETE FROM Credentials");
-            //db.ExecuteAsync("DELETE FROM Athlete");
-            //db.ExecuteAsync("DELETE FROM Activity");
-            //db.ExecuteAsync("DELETE FROM Power");
-            //db.ExecuteAsync("DELETE FROM ActivitySummary");
+            db.ExecuteAsync("DELETE FROM Credentials");
+            db.ExecuteAsync("DELETE FROM Athlete");
+            db.ExecuteAsync("DELETE FROM Activity");
+            db.ExecuteAsync("DELETE FROM ActivitySummary");
+            db.ExecuteAsync("DELETE FROM Power");
+            db.ExecuteAsync("DELETE FROM Speed");
+            db.ExecuteAsync("DELETE FROM Cadence");
         }
 
         public AsyncTableQuery<T> AsQueryable() =>

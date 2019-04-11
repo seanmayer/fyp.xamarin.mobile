@@ -4,36 +4,53 @@
              xmlns:forms1="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="FYP.Xamarin.Mobile.ViewsModel.ActivitieList"
              Title="Recent Rides">
-    
-    <ListView x:Name="MyListView"
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <forms1:AnimationView x:Name="Loading_Icon" 
+                             AutoPlay="True" 
+                             Animation="40-loading.json" 
+                             Loop="True"
+                             IsVisible="True"
+                             IsEnabled="True"
+                             IsPlaying="True"
+                             VerticalOptions="FillAndExpand" 
+                             HorizontalOptions="FillAndExpand" 
+                             Grid.Row="0"  />
+
+        <ListView x:Name="MyListView"
             ItemsSource="{Binding Items}"
             ItemTapped="Handle_ItemTapped"
             CachingStrategy="RecycleElement"
-            HasUnevenRows="true">
-        
-        <ListView.ItemTemplate >
+            HasUnevenRows="true"
+            Grid.Row="0">
+            <ListView.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Down" Swiped="OnSwiped"/>
+            </ListView.GestureRecognizers>
+            <ListView.ItemTemplate >
+                <DataTemplate>
+                    <ViewCell>
+                        <ContentView x:Name="listItemViewCell">
+                            <Grid  Margin="10" BackgroundColor="White">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="75" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image HeightRequest="75" WidthRequest="75" Source="scp_generic_icon.png" />
+                                <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding label1}" FontSize="18" />
+                                    <Label Text="{Binding label2}" FontSize="Small" TextColor="Accent" />
+                                </StackLayout>
+                            </Grid>
+                        </ContentView>
 
-            <DataTemplate>
-                
-                <ViewCell>
-                    <ContentView x:Name="listItemViewCell">
-                        <Grid  Margin="10" BackgroundColor="White">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="75" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <Image HeightRequest="75" WidthRequest="75" Source="scp_generic_icon.png" />
-
-                            <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                <Label Text="{Binding label1}" FontSize="18" />
-                                <Label Text="{Binding label2}" FontSize="Small" TextColor="Accent" />
-                            </StackLayout>
-                        </Grid>
-                    </ContentView>
-
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </ContentPage>
+    
