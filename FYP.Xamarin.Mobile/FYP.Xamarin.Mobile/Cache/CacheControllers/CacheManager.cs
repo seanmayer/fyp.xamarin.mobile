@@ -15,10 +15,10 @@ namespace FYP.Xamarin.Mobile.Database
 
         public CacheManager()
         {
-            var dbPath = DependencyService.Get<IFileHelper>().GetLocalFilePath("SCP_DatabaseProd2.db3.db3");
+            var dbPath = DependencyService.Get<IFileHelper>().GetLocalFilePath("SCP_DatabaseTest.db3.db3");
             db = new SQLiteAsyncConnection(dbPath);
             db.CreateTableAsync<T>().Wait();
-            //ClearTables();
+            ClearTables();
 
         }
 

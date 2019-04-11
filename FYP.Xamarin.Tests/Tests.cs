@@ -13,6 +13,7 @@ namespace FYP.Xamarin.Tests
     {
         IApp app;
         Platform platform;
+        
 
         public Tests(Platform platform)
         {
@@ -22,17 +23,47 @@ namespace FYP.Xamarin.Tests
         [SetUp]
         public void BeforeEachTest()
         {
+            
             app = AppInitializer.StartApp(platform);
         }
 
         [Test]
-        public void WelcomeTextIsDisplayed()
+        public void Login()
         {
-            //AppResult[] results = app.WaitForElement(c => c.Marked("Welcome to Xamarin.Forms!"));
-            //app.Screenshot("Welcome screen.");
-
-            //Assert.IsTrue(results.Any());
+            //app.Repl();
+            app.ClearText("NoResourceEntry-7");
+            app.ClearText("NoResourceEntry-8");
+            app.EnterText("NoResourceEntry-7", "sean.mayer1");
+            app.EnterText("NoResourceEntry-8", "password");
+            app.DismissKeyboard();
+            app.Tap("NoResourceEntry-9");
         }
+
+        [Test]
+        public void Signup()
+        {
+            app.Tap("NoResourceEntry-12");
+
+            app.ClearText(c => c.Marked("NoResourceEntry-28"));
+            app.ClearText(c => c.Marked("NoResourceEntry-29"));
+            app.ClearText(c => c.Marked("NoResourceEntry-30"));
+            app.ClearText(c => c.Marked("NoResourceEntry-31"));
+            app.ClearText(c => c.Marked("NoResourceEntry-32"));
+
+            app.EnterText(c => c.Marked("NoResourceEntry-28"), "sean.mayer1");
+            app.EnterText(c => c.Marked("NoResourceEntry-29"), "password");
+            app.EnterText(c => c.Marked("NoResourceEntry-30"), "password");
+            app.EnterText(c => c.Marked("NoResourceEntry-31"), "35193560");
+            app.EnterText(c => c.Marked("NoResourceEntry-32"), "e8a14408cd001cb6a86607a21ff50bd42f0b76f8");
+            app.DismissKeyboard();
+            
+            app.Tap("NoResourceEntry-33");
+            app.Repl();
+        }
+
+
+
+
 
 
     }
