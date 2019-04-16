@@ -33,25 +33,29 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 this.AccessToken = accessToken;
                 LoadScreen();
 
-            TenSecLabelTitle.GestureRecognizers.Add(
-            new TapGestureRecognizer()
-            {
-                Command = new Command(() => {
-                    Navigation.PushAsync(new Loading());
-                })
-            }
-        );
+            TenSecLabelTitle.GestureRecognizers.Add(new TapGestureRecognizer()
+                {
+                    Command = new Command(() => {
+                        Navigation.PushAsync(new Loading());
+                    })
+                }
+            );
 
 
         }
 
         public void LoadScreen()
         {
+            Stream = null;
             GetCustomStyles(MenuSelection);
             Stream = StreamFactory.GetSingleton(Activity, AccessToken).CreateStream(MenuSelection);
             LoadChart(Stream);
             LoadLabels(Stream);
+            
+
         }
+
+
 
             public void ApplyStyles()
         {
@@ -79,15 +83,17 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             }
         }
 
+
         public async void LoadChart(Task<Dictionary<int, long>> stream)
         {
-
+            int count = 0;
             foreach (KeyValuePair<int, long> entry in await stream)
             {
                 Entries.Add(new Entry(entry.Value)
                 {
                     Color = SKColor.Parse(ChartColour),
                 });
+                count++;
             }
 
             Chart2.Chart = new LineChart()
@@ -99,7 +105,8 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 PointSize = 1,
             };
 
-
+            await DisplayAlert("datapoints: ", count.ToString(), "OK");
+            await DisplayAlert("activityId: ", Activity.activityId.ToString(), "OK");
         }
 
         public async void LoadLabels(Task<Dictionary<int, long>> stream)
@@ -108,9 +115,9 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             if(loadStream.Count != 0)
             { 
                 MaxLabel.Text = loadStream.Values.Max().ToString();
-                TenSecLabel.Text = ((int)GetHighestSequenceXAverage(10, loadStream)).ToString();
-                TwentySecLabel.Text = ((int)GetHighestSequenceXAverage(20, loadStream)).ToString();
-                ThirtySecLabel.Text = ((int)GetHighestSequenceXAverage(30, loadStream)).ToString();
+                TenSecLabel.Text = CheckStreamSequenceNotOutAbounds(((int)GetHighestSequenceXAverage(10, loadStream)));
+                TwentySecLabel.Text = CheckStreamSequenceNotOutAbounds(((int)GetHighestSequenceXAverage(20, loadStream)));
+                ThirtySecLabel.Text = CheckStreamSequenceNotOutAbounds(((int)GetHighestSequenceXAverage(30, loadStream)));
             }
             else
             {
@@ -119,23 +126,42 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             }
         }
 
+        public string CheckStreamSequenceNotOutAbounds(int streamLabelValue)
+        {
+            if (streamLabelValue == -1)
+            {
+                return "N/A";
+            }
+
+            return streamLabelValue.ToString();
+        }
+
+
+
         public double GetHighestSequenceXAverage(int Seconds, Dictionary<int, long> Stream)
         {
-            int Count = 0;
-            Dictionary<int, double> Averages = new Dictionary<int, double>();
-            for (int i = 0; i < ((Stream.Keys.Max()) / Seconds); i++)
+            try
             {
-                Dictionary<int, long> XElements = new Dictionary<int, long>();
-                for (int s = 0; s < Seconds; s++)
+                Dictionary<int, double> Averages = new Dictionary<int, double>();
+
+                decimal numberOfGroups = Stream.Keys.Max() / Seconds;
+                int counter = 0;
+                int groupSize = Convert.ToInt32(Math.Ceiling(Stream.Count / numberOfGroups));
+
+                IEnumerable<IGrouping<int, KeyValuePair<int, long>>> groupedData = Stream.GroupBy(x => counter++ / groupSize);
+
+                foreach (var group in groupedData)
                 {
-                    int key1 = Stream.ElementAt(Count + s).Key;
-                    XElements.Add(Stream.ElementAt(Count + s).Key, Stream.ElementAt(Count + s).Value);
+                    Averages.Add(group.Key, group.Average(t => t.Value));
                 }
-                Averages.Add(i, XElements.Values.Average());
-                XElements.Clear();
-                Count++;
+
+                return Averages.Values.Max();
+
             }
-            return Averages.Values.Max();
+            catch(Exception e)
+            {
+                return -1;
+            }
         }
     }
 }

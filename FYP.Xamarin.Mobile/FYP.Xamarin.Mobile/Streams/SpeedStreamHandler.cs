@@ -20,6 +20,7 @@ namespace FYP.Xamarin.Mobile.Streams
 
         public SpeedStreamHandler(Activity activity, string accessToken)
         {
+            speedStream = null;
             this.ActivityId = activity.activityId;
             speedStreamServiceHandler = new SpeedStreamServiceHandler();
             speedCacheHandler = new SpeedCacheHandler();

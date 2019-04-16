@@ -10,12 +10,13 @@ namespace FYP.Xamarin.Mobile.ViewModels
     public class CadenceCacheHandler : ICacheHandlerFacade<Cadence>
     {
         private CacheManager<Cadence> cadence_DbHandler;
-
+        private List<Cadence> cadenceCache;
         private long ActivityId;
         private string Stream;
 
         public CadenceCacheHandler()
         {
+            cadenceCache = null;
             cadence_DbHandler = new CacheManager<Cadence>();
         }
 
@@ -46,8 +47,8 @@ namespace FYP.Xamarin.Mobile.ViewModels
 
         public async Task<List<Cadence>> FindList(long activityId)
         {
-            List<Cadence> myList = await cadence_DbHandler.Get<Cadence>();
-            return myList.FindAll(c => (c.activityId == activityId));
+            cadenceCache = await cadence_DbHandler.Get<Cadence>();
+            return cadenceCache.FindAll(c => (c.activityId == activityId));
         }
 
         public async Task<List<Cadence>> FindAll()

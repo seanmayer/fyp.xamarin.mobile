@@ -10,12 +10,13 @@ namespace FYP.Xamarin.Mobile.ViewModels
     public class PowerCacheHandler : ICacheHandlerFacade<Power>
     {
         private CacheManager<Power> power_DbHandler;
-
+        private List<Power> powerCache;
         private long ActivityId;
         private string Stream;
 
         public PowerCacheHandler()
         {
+            powerCache = null;
             power_DbHandler = new CacheManager<Power>();
         }
 
@@ -47,8 +48,8 @@ namespace FYP.Xamarin.Mobile.ViewModels
 
         public async Task<List<Power>> FindList(long activityId)
         {
-            List<Power> myList = await power_DbHandler.Get<Power>();
-            return myList.FindAll(c => (c.activityId == activityId));
+            powerCache = await power_DbHandler.Get<Power>();
+            return powerCache.FindAll(c => (c.activityId == activityId));
         }
 
 

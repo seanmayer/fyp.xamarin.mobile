@@ -10,12 +10,13 @@ namespace FYP.Xamarin.Mobile.ViewModels
     public class SpeedCacheHandler : ICacheHandlerFacade<Speed>
     {
         private CacheManager<Speed> speed_DbHandler;
-
+        private List<Speed> speedCache;
         private long ActivityId;
         private string Stream;
 
         public SpeedCacheHandler()
         {
+            speedCache = null;
             speed_DbHandler = new CacheManager<Speed>();
         }
 
@@ -46,8 +47,8 @@ namespace FYP.Xamarin.Mobile.ViewModels
 
         public async Task<List<Speed>> FindList(long activityId)
         {
-            List<Speed> myList = await speed_DbHandler.Get<Speed>();
-            return myList.FindAll(c => (c.activityId == activityId));
+            speedCache = await speed_DbHandler.Get<Speed>();
+            return speedCache.FindAll(c => (c.activityId == activityId));
         }
 
         public async Task<List<Speed>> FindAll()

@@ -20,6 +20,7 @@ namespace FYP.Xamarin.Mobile.Streams
 
         public CadenceStreamHandler(Activity activity, string accessToken)
         {
+            cadenceStream = null;
             this.ActivityId = activity.activityId;
             cadenceStreamServiceHandler = new CadenceStreamServiceHandler();
             cadenceCacheHandler = new CadenceCacheHandler();

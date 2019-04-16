@@ -20,6 +20,7 @@ namespace FYP.Xamarin.Mobile.Streams
 
         public PowerStreamHandler(Activity activity, string accessToken)
         {
+            powerStream = null;
             this.ActivityId = activity.activityId;
             powerStreamServiceHandler = new PowerStreamServiceHandler();
             powerCacheHandler = new PowerCacheHandler();
