@@ -7,26 +7,24 @@ namespace FYP.Xamarin.Mobile.ViewsModel
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TrendMenu : ContentPage
     {
-        private Activity Activity;
+        private string AthleteId;
+        private string StravaId;
         private string AccessToken;
         private string buttonDefinition1 = "Power";
         private string buttonDefinition2 = "Cadence";
         private string buttonDefinition3 = "Speed";
 
-        public TrendMenu()
+        public TrendMenu(string athleteId, string stravaId, string accessToken)
         {
             InitializeComponent();
+            Title = "Trend Menu";
+            this.AccessToken = accessToken;
+            this.StravaId = stravaId;
+            this.AthleteId = athleteId;
             ApplyStyles();
         }
 
-        public TrendMenu(Activity activity, string accessToken)
-        {
-            InitializeComponent();
-            Title = activity.name;
-            this.Activity = activity;
-            this.AccessToken = accessToken;
-            ApplyStyles();
-        }
+
 
 
         public void ApplyStyles()
@@ -67,9 +65,9 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             var btn2 = new Button { Text = buttonDefinition2, Style = greenButton };
             var btn3 = new Button { Text = buttonDefinition3, Style = blueButton };
 
-            btn1.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken, buttonDefinition1));
-            btn2.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken, buttonDefinition2));
-            btn3.Clicked += async (sender, args) => await Navigation.PushAsync(new ActivityAnaylsis(Activity, AccessToken, buttonDefinition3));
+            btn1.Clicked += async (sender, args) => await Navigation.PushAsync(new TrendAnalysis(AthleteId, StravaId, AccessToken, buttonDefinition1));
+            btn2.Clicked += async (sender, args) => await Navigation.PushAsync(new TrendAnalysis(AthleteId, StravaId, AccessToken, buttonDefinition2));
+            btn3.Clicked += async (sender, args) => await Navigation.PushAsync(new TrendAnalysis(AthleteId, StravaId, AccessToken, buttonDefinition3));
 
             var controlGrid = new Grid { RowSpacing = 15, ColumnSpacing = 15 };
             controlGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0) });

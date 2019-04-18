@@ -44,7 +44,7 @@ namespace FYP.Xamarin.Mobile
             Trends_Label.GestureRecognizers.Add(new TapGestureRecognizer()
             {
                 Command = new Command(() => {
-                    Detail = new NavigationPage(new TrendMenu());
+                    Detail = new NavigationPage(new TrendMenu(athlete.AthleteId.ToString(), athlete.StravaId, athlete.AccessToken));
                     Trends_Label.TextColor = Color.FromHex("#4285F4");
                     ActivitiesList_Label.TextColor = Color.FromHex("#000000");
                     Leaderboard_Label.TextColor = Color.FromHex("#000000");

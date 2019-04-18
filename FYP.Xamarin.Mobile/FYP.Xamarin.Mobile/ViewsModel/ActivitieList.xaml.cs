@@ -1,5 +1,6 @@
 ﻿using FYP.Xamarin.Mobile.Database;
 using FYP.Xamarin.Mobile.Database.Model;
+using FYP.Xamarin.Mobile.Formatters;
 using FYP.Xamarin.Mobile.Services;
 using FYP.Xamarin.Mobile.Services.Model;
 using System;
@@ -180,8 +181,8 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 try
                 { 
                     ActivitySummary activitySummary = await activitySummaryCacheHandler.Find(activity.activityId);
-                    activity.label1 = DateTime.ParseExact(activity.startDate, "ddd MMM dd HH:mm:ss 'GMT' yyyy", CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
-                    activity.label2 = TimeSpan.FromSeconds(Convert.ToDouble(activitySummary.movingTime)).ToString(@"hh\:mm\:ss\:fff");
+                    activity.label1 = FormatterHandler.Instance.ConvertGMTToDDMMYYYY(activity.startDate);
+                    activity.label2 = FormatterHandler.Instance.ConvertEpochTimeTohhmmssfff(Convert.ToDouble(activitySummary.movingTime));
                     Items.Add(activity);
                 }
                 catch(Exception e)

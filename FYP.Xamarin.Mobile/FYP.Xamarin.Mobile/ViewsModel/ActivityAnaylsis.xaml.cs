@@ -10,6 +10,9 @@ using Xamarin.Forms.Xaml;
 using FYP.Xamarin.Mobile.Database.Model;
 using FYP.Xamarin.Mobile.Streams.StreamFactory;
 using System.Collections.Concurrent;
+using FYP.Xamarin.Mobile.Renders;
+using FYP.Xamarin.Mobile.Errors;
+using FYP.Xamarin.Mobile.Algorithms;
 
 namespace FYP.Xamarin.Mobile.ViewsModel
 {
@@ -18,149 +21,72 @@ namespace FYP.Xamarin.Mobile.ViewsModel
     {
         private Task<Dictionary<int, long>> Stream;
         private List<Entry> Entries = new List<Entry>();
-        private String ChartColour;
         private Activity Activity;
         private string AccessToken;
         private string MenuSelection;
 
         public ActivityAnaylsis(Activity activity, string accessToken, string menuSelection)
         {
-                InitializeComponent();
-                Title = menuSelection;
-                ApplyStyles();
-                this.Activity = activity;
-                this.MenuSelection = menuSelection;
-                this.AccessToken = accessToken;
-                LoadScreen();
-
-            TenSecLabelTitle.GestureRecognizers.Add(new TapGestureRecognizer()
-                {
-                    Command = new Command(() => {
-                        Navigation.PushAsync(new Loading());
-                    })
-                }
-            );
-
-
+            InitializeComponent();
+            Title = menuSelection;
+            ApplyStyles();
+            this.Activity = activity;
+            this.MenuSelection = menuSelection;
+            this.AccessToken = accessToken;
+            LoadScreen();
+            TenSecLabelTitle.GestureRecognizers.Add(new TapGestureRecognizer(){Command = new Command(() =>{Navigation.PushAsync(new Loading());})});
         }
 
         public void LoadScreen()
         {
-            Stream = null;
-            GetCustomStyles(MenuSelection);
+            PeaksTitle.Text = LabelHandler.Instance.GetPeaksTitle(MenuSelection);
+            UnitsLabel1.Text = LabelHandler.Instance.GetPeaksLabel(MenuSelection);
+            UnitsLabel2.Text = LabelHandler.Instance.GetPeaksLabel(MenuSelection);
+            UnitsLabel3.Text = LabelHandler.Instance.GetPeaksLabel(MenuSelection);
+            UnitsLabel4.Text = LabelHandler.Instance.GetPeaksLabel(MenuSelection);
             Stream = StreamFactory.GetSingleton(Activity, AccessToken).CreateStream(MenuSelection);
             LoadChart(Stream);
             LoadLabels(Stream);
-            
 
         }
 
-
-
-            public void ApplyStyles()
+        public void ApplyStyles()
         {
             BackgroundColor = Color.FromHex("#1F2D44");
             ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#1F2D44");
             ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
         }
 
-        public void GetCustomStyles(String menuSelection)
-        {
-            switch (menuSelection)
-            {
-                case "Power": PeaksTitle.Text = "Power Peaks "; UnitsLabel1.Text ="watts"; UnitsLabel2.Text = "watts"; UnitsLabel3.Text = "watts"; UnitsLabel4.Text = "watts";
-                    ChartColour = "#EC5D5D";
-                    break;
-                case "Cadence": PeaksTitle.Text = "Cadence Peaks "; UnitsLabel1.Text = "rpm"; UnitsLabel2.Text = "rpm"; UnitsLabel3.Text = "rpm"; UnitsLabel4.Text = "rpm";
-                    ChartColour = "#A5C2A3";
-                    break;
-                case "Speed": PeaksTitle.Text = "Speed Peaks "; UnitsLabel1.Text = "mph"; UnitsLabel2.Text = "mph"; UnitsLabel3.Text = "mph"; UnitsLabel4.Text = "mph";
-                    ChartColour = "#7EBDD1";
-                    break;
-                default: PeaksTitle.Text = "Unavailable"; UnitsLabel1.Text = "n/a"; UnitsLabel2.Text = "n/a"; UnitsLabel3.Text = "n/a"; UnitsLabel4.Text = "n/a";
-                    ChartColour = "#707070";
-                    break;
-            }
-        }
-
-
         public async void LoadChart(Task<Dictionary<int, long>> stream)
         {
-            int count = 0;
             foreach (KeyValuePair<int, long> entry in await stream)
             {
                 Entries.Add(new Entry(entry.Value)
                 {
-                    Color = SKColor.Parse(ChartColour),
+                    Color = SKColor.Parse(ChartColourHandler.Instance.GetCustomStyles(MenuSelection)),
                 });
-                count++;
+
             }
-
-            Chart2.Chart = new LineChart()
-            {
-                Entries = Entries,
-                LineMode = LineMode.Straight,
-                LineSize = 1,
-                PointMode = PointMode.None,
-                PointSize = 1,
-            };
-
-            await DisplayAlert("datapoints: ", count.ToString(), "OK");
-            await DisplayAlert("activityId: ", Activity.activityId.ToString(), "OK");
+            Chart2.Chart = new LineChart() { Entries = Entries, LineMode = LineMode.Straight, LineSize = 1, PointMode = PointMode.None, PointSize = 1, };
         }
 
         public async void LoadLabels(Task<Dictionary<int, long>> stream)
         {
             Dictionary<int, long> loadStream = await stream;
-            if(loadStream.Count != 0)
-            { 
+            if (loadStream.Count != 0)
+            {
                 MaxLabel.Text = loadStream.Values.Max().ToString();
-                TenSecLabel.Text = CheckStreamSequenceNotOutAbounds(((int)GetHighestSequenceXAverage(10, loadStream)));
-                TwentySecLabel.Text = CheckStreamSequenceNotOutAbounds(((int)GetHighestSequenceXAverage(20, loadStream)));
-                ThirtySecLabel.Text = CheckStreamSequenceNotOutAbounds(((int)GetHighestSequenceXAverage(30, loadStream)));
+                TenSecLabel.Text = ErrorHandler.Instance.CheckStreamSequenceNotOutAbounds(
+                    ((int)DataManipulatorHandler.Instance.GetHighestSequenceXAverage(10, loadStream)));
+                TwentySecLabel.Text = ErrorHandler.Instance.CheckStreamSequenceNotOutAbounds(
+                    ((int)DataManipulatorHandler.Instance.GetHighestSequenceXAverage(20, loadStream)));
+                ThirtySecLabel.Text = ErrorHandler.Instance.CheckStreamSequenceNotOutAbounds(
+                    ((int)DataManipulatorHandler.Instance.GetHighestSequenceXAverage(30, loadStream)));
             }
             else
             {
                 await DisplayAlert("Oops", "No data logged!", "OK");
                 await Navigation.PushAsync(new ActivityMenu((Activity)Activity, AccessToken));
-            }
-        }
-
-        public string CheckStreamSequenceNotOutAbounds(int streamLabelValue)
-        {
-            if (streamLabelValue == -1)
-            {
-                return "N/A";
-            }
-
-            return streamLabelValue.ToString();
-        }
-
-
-
-        public double GetHighestSequenceXAverage(int Seconds, Dictionary<int, long> Stream)
-        {
-            try
-            {
-                Dictionary<int, double> Averages = new Dictionary<int, double>();
-
-                decimal numberOfGroups = Stream.Keys.Max() / Seconds;
-                int counter = 0;
-                int groupSize = Convert.ToInt32(Math.Ceiling(Stream.Count / numberOfGroups));
-
-                IEnumerable<IGrouping<int, KeyValuePair<int, long>>> groupedData = Stream.GroupBy(x => counter++ / groupSize);
-
-                foreach (var group in groupedData)
-                {
-                    Averages.Add(group.Key, group.Average(t => t.Value));
-                }
-
-                return Averages.Values.Max();
-
-            }
-            catch(Exception e)
-            {
-                return -1;
             }
         }
     }
