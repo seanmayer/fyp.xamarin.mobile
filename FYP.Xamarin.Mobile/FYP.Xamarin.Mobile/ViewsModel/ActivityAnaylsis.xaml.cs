@@ -63,11 +63,11 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             {
                 Entries.Add(new Entry(entry.Value)
                 {
-                    Color = SKColor.Parse(ChartColourHandler.Instance.GetCustomStyles(MenuSelection)),
+                    Color = ChartColourHandler.Instance.GetSKColorCustomStyles(MenuSelection),
                 });
 
             }
-            Chart2.Chart = new LineChart() { Entries = Entries, LineMode = LineMode.Straight, LineSize = 1, PointMode = PointMode.None, PointSize = 1, };
+            Chart2.Chart = new LineChart() { Entries = Entries, LineMode = LineMode.Straight, LineSize = 1, PointMode = PointMode.None, PointSize = 1};
         }
 
         public async void LoadLabels(Task<Dictionary<int, long>> stream)

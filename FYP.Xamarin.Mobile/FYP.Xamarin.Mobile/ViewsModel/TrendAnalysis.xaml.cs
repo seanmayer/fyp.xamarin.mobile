@@ -7,13 +7,9 @@ using FYP.Xamarin.Mobile.Renders;
 using FYP.Xamarin.Mobile.Streams.StreamFactory;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Entry = Microcharts.Entry;
 using SkiaSharp;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Microcharts;
@@ -24,9 +20,6 @@ namespace FYP.Xamarin.Mobile.ViewsModel
 	public partial class TrendAnalysis : ContentPage
 	{
         private ActivityCacheHandler activityCacheHandler;
-        
-        private List<Entry> Entries = new List<Entry>();
-        private Task<Dictionary<long, int>> TrendData;
         private string MenuSelection;
         private string AccessToken;
 
@@ -36,16 +29,43 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             this.MenuSelection = menuSelection;
             this.AccessToken = accessToken;
             activityCacheHandler = new ActivityCacheHandler();
-            
             activityCacheHandler.Init(Int64.Parse(athleteId));
             LoadScreen();
 
         }
 
-        public void LoadScreen()
+        public async void LoadScreen()
         {
-            this.TrendData = PopulateTrendAnalysis("December");
-            LoadChart(TrendData);
+            Title = MenuSelection;
+            MonthTitle1.TextColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
+            MonthTitle2.TextColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
+            Highlight1.BackgroundColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
+            Highlight2.BackgroundColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
+            frame.IsVisible = true;
+
+            Chart3.Chart = new LineChart()
+            {
+                Entries = await LoadChart(PopulateTrendAnalysis("December")),
+                LineMode = LineMode.Straight,
+                LineSize = 8,
+                PointMode = PointMode.Square,
+                PointSize = 18,
+                BackgroundColor = SKColors.White
+            };
+            Chart3.IsVisible = true;
+            
+
+            Chart4.Chart = new LineChart()
+            {
+                Entries = await LoadChart(PopulateTrendAnalysis("November")),
+                LineMode = LineMode.Straight,
+                LineSize = 8,
+                PointMode = PointMode.Square,
+                PointSize = 18,
+                BackgroundColor = SKColors.White
+            };
+            Chart4.IsVisible = true;
+            
         }
 
         public async Task<Dictionary<long,int>> PopulateTrendAnalysis(string month)
@@ -57,42 +77,41 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 {
                     try
                     {
-                        TrendData.Add(activity.activityId, Int32.Parse(ErrorHandler.Instance.CheckStreamSequenceNotOutAbounds(((int)DataManipulatorHandler.Instance
-                                                       .GetHighestSequenceXAverage(30, await StreamFactory.GetSingleton(activity, AccessToken).CreateStream(MenuSelection))))));
+                        TrendData.Add(activity.activityId, 
+                                      Int32.Parse(
+                                      ErrorHandler.Instance.CheckStreamSequenceNotOutAbounds(((int)
+                                      DataManipulatorHandler.Instance.GetHighestSequenceXAverage(30, await 
+                                      StreamFactory.GetSingleton(activity, AccessToken)
+                                      .CreateStream(MenuSelection))))));
                     }
-                    catch (Exception e)
-                    {
-
-                    }
-
+                    catch (Exception){}
                 }
             }
             return TrendData;
         }
 
-
-
-        public async void LoadChart(Task<Dictionary<long, int>> stream)
+        public async Task<List<Entry>> LoadChart(Task<Dictionary<long, int>> stream)
         {
+            List<Entry> Entries = new List<Entry>();
             foreach (KeyValuePair<long, int> entry in await stream)
             {
                 Entries.Add(new Entry(entry.Value)
                 {
-                    Color = SkiaSharp.SKColor.Parse(ChartColourHandler.Instance.GetCustomStyles(MenuSelection)),
+                    Color = ChartColourHandler.Instance.GetSKColorCustomStyles(MenuSelection),
+                    Label = entry.Value.ToString(),
+                    TextColor = ChartColourHandler.Instance.GetSKColorCustomStyles(MenuSelection),
                     ValueLabel = entry.Value.ToString()
                 });
-             
             }
+            return Entries;
+        }
 
-            Chart2.Chart = new LineChart()
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            if (frame.IsVisible)
             {
-                Entries = Entries,
-                LineMode = LineMode.Straight,
-                LineSize = 8,
-                PointMode = PointMode.Square,
-                PointSize = 18
-            };
-
+                frame.IsVisible = false;
+            }
         }
     }
 }

@@ -1,12 +1,18 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace FYP.Xamarin.Mobile.Renders
 {
     public class ChartColourHandler
     {
         private static ChartColourHandler singletonInstance = CreateSingleton();
+        private readonly string PowerColorScheme = "#EC5D5D";
+        private readonly string SpeedColorScheme = "#7EBDD1";
+        private readonly string CadenceColorScheme = "#A5C2A3";
+        private readonly string DefaultColorScheme = "#707070";
 
         private ChartColourHandler()
         {
@@ -27,18 +33,33 @@ namespace FYP.Xamarin.Mobile.Renders
             get { return singletonInstance; }
         }
 
-        public string GetCustomStyles(String menuSelection)
+        public SKColor GetSKColorCustomStyles(String menuSelection)
         {
             switch (menuSelection)
             {
                 case "Power":
-                    return "#EC5D5D";
+                    return SKColor.Parse(PowerColorScheme);
                 case "Cadence":
-                    return "#A5C2A3";
+                    return SKColor.Parse(CadenceColorScheme);
                 case "Speed":
-                    return "#7EBDD1";
+                    return SKColor.Parse(SpeedColorScheme);
                 default:
-                    return "#707070";
+                    return SKColor.Parse(DefaultColorScheme);
+            }
+        }
+
+        public Color GetColorCustomStyles(String menuSelection)
+        {
+            switch (menuSelection)
+            {
+                case "Power":
+                    return Color.FromHex(PowerColorScheme);
+                case "Cadence":
+                    return Color.FromHex(CadenceColorScheme);
+                case "Speed":
+                    return Color.FromHex(SpeedColorScheme);
+                default:
+                    return Color.FromHex(DefaultColorScheme);
             }
         }
     }
