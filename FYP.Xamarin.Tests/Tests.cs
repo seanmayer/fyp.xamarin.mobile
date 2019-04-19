@@ -28,9 +28,23 @@ namespace FYP.Xamarin.Tests
         }
 
         [Test]
+        public void ViewActivities()
+        {
+            Signup();
+            app.ClearText("NoResourceEntry-40");
+            app.ClearText("NoResourceEntry-41");
+            app.EnterText("NoResourceEntry-40", "sean.mayer1");
+            app.EnterText("NoResourceEntry-41", "password");
+            app.DismissKeyboard();
+            app.Tap("NoResourceEntry-42");
+            //app.Repl();
+            app.Tap("NoResourceEntry-68");
+        }
+
+        [Test]
         public void Login()
         {
-            //app.Repl();
+            Signup();
             app.ClearText("NoResourceEntry-7");
             app.ClearText("NoResourceEntry-8");
             app.EnterText("NoResourceEntry-7", "sean.mayer1");
@@ -56,10 +70,12 @@ namespace FYP.Xamarin.Tests
             app.EnterText(c => c.Marked("NoResourceEntry-31"), "35193560");
             app.EnterText(c => c.Marked("NoResourceEntry-32"), "e8a14408cd001cb6a86607a21ff50bd42f0b76f8");
             app.DismissKeyboard();
-            
             app.Tap("NoResourceEntry-33");
-            app.Repl();
+            app.Tap("button2");
+
         }
+
+
 
 
 
