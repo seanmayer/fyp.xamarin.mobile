@@ -13,6 +13,8 @@ using SkiaSharp;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Microcharts;
+using Plugin.InputKit.Shared.Controls;
+using System.Collections.ObjectModel;
 
 namespace FYP.Xamarin.Mobile.ViewsModel
 {
@@ -22,6 +24,8 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         private ActivityCacheHandler activityCacheHandler;
         private string MenuSelection;
         private string AccessToken;
+        private int Seconds;
+        private ObservableCollection<string> Items = new ObservableCollection<string> { "10 Seconds", "20 Seconds", "30 Seconds" };
 
         public TrendAnalysis (string athleteId, string stravaId, string accessToken, string menuSelection)
 		{
@@ -30,8 +34,9 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             this.AccessToken = accessToken;
             activityCacheHandler = new ActivityCacheHandler();
             activityCacheHandler.Init(Int64.Parse(athleteId));
+            this.Seconds = 10;
             LoadScreen();
-
+            DropDownBox.ItemsSource = Items;
         }
 
         public async void LoadScreen()
@@ -41,7 +46,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             MonthTitle2.TextColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
             Highlight1.BackgroundColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
             Highlight2.BackgroundColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
-            frame.IsVisible = true;
+            
 
             Chart3.Chart = new LineChart()
             {
@@ -80,7 +85,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                         TrendData.Add(activity.activityId, 
                                       Int32.Parse(
                                       ErrorHandler.Instance.CheckStreamSequenceNotOutAbounds(((int)
-                                      DataManipulatorHandler.Instance.GetHighestSequenceXAverage(30, await 
+                                      DataManipulatorHandler.Instance.GetHighestSequenceXAverage(Seconds, await 
                                       StreamFactory.GetSingleton(activity, AccessToken)
                                       .CreateStream(MenuSelection))))));
                     }
@@ -98,7 +103,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 Entries.Add(new Entry(entry.Value)
                 {
                     Color = ChartColourHandler.Instance.GetSKColorCustomStyles(MenuSelection),
-                    Label = entry.Value.ToString(),
+                    Label = "|",
                     TextColor = ChartColourHandler.Instance.GetSKColorCustomStyles(MenuSelection),
                     ValueLabel = entry.Value.ToString()
                 });
@@ -106,12 +111,32 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             return Entries;
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        private void DropDownBox_SelectedItemChanged(object sender, Plugin.InputKit.Shared.Utils.SelectedItemChangedArgs e)
         {
-            if (frame.IsVisible)
+            if (DropDownBox.SelectedItem.ToString().Equals("10 Seconds"))
             {
-                frame.IsVisible = false;
+                HideCharts();
+                this.Seconds = 10;
+                LoadScreen();
             }
+            if (DropDownBox.SelectedItem.ToString().Equals("20 Seconds"))
+            {
+                HideCharts();
+                this.Seconds = 20;
+                LoadScreen();
+            }
+            if (DropDownBox.SelectedItem.ToString().Equals("30 Seconds"))
+            {
+                HideCharts();
+                this.Seconds = 30;
+                LoadScreen();
+            }
+        }
+
+        public void HideCharts()
+        {
+            Chart3.IsVisible = false;
+            Chart4.IsVisible = false;
         }
     }
 }

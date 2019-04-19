@@ -3,19 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:forms1="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:forms="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
-             x:Class="FYP.Xamarin.Mobile.ViewsModel.TrendAnalysis">
-    
+             x:Class="FYP.Xamarin.Mobile.ViewsModel.TrendAnalysis"
+             xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit">
+
+
     <ScrollView>
 
-        <StackLayout Orientation="Vertical" BackgroundColor="#1F2D44">
-            <AbsoluteLayout x:Name="absoluteLayout">
+        
+        <StackLayout Orientation="Vertical" BackgroundColor="#1F2D44" >
+
+            <AbsoluteLayout HorizontalOptions="End" VerticalOptions="End">
                 <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
-
+                    <input:Dropdown 
+                            TitleColor="White"
+                            AnnotationColor="Accent" 
+                            IsRequired="True" 
+                            BorderColor="White" 
+                            Color="White"
+                            BackgroundColor="#1F2D44"
+                            Placeholder="10 Seconds"
+                            x:Name="DropDownBox"
+                            TextColor="White"
+                            PlaceholderColor="White"
+                            SelectedItemChanged="DropDownBox_SelectedItemChanged"/>
                 </StackLayout>
-                <Frame x:Name="frame" AbsoluteLayout.LayoutFlags="WidthProportional" AbsoluteLayout.LayoutBounds="0,0,1,10" IsVisible="False">
-       
-                </Frame>
-
+                
             </AbsoluteLayout>
 
             <Label  HeightRequest="10" />
@@ -72,11 +84,9 @@
 
                 <Label Grid.Row="0" Grid.Column="0" Text="    " XAlign ="End" />
                 <Label Grid.Row="1" Grid.Column="0" x:Name="MonthTitle2"  BackgroundColor="White" Text="November     " XAlign ="End" />
-                <forms:ChartView  Grid.Row="2" Grid.Column="0" x:Name="Chart4" HeightRequest="166" Margin="-30" IsVisible="False"/>
+                <forms:ChartView  Grid.Row="2" Grid.Column="0" x:Name="Chart4" HeightRequest="166" Margin="0" IsVisible="False"/>
             </Grid>
-            <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
-            </StackLayout.GestureRecognizers>
+
         </StackLayout>
     </ScrollView>
 </ContentPage>

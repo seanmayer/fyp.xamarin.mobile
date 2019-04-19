@@ -49,9 +49,10 @@ namespace FYP.Xamarin.Mobile.Database
             catch (Exception) { return false; }
         }
 
-        public Task<Activity> Find(long id)
+        public async Task<Activity> Find(long id)
         {
-            throw new NotImplementedException();
+            List<Activity> myList = await activityDbHandler.Get<Activity>();
+            return myList.Find(c => (c.activityId == id));
         }
 
         public Task<List<Activity>> FindList(long id)

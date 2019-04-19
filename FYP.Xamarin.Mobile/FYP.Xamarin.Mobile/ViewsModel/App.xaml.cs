@@ -12,7 +12,9 @@ namespace FYP.Xamarin.Mobile
             InitializeComponent();
 
             MainPage = new NavigationPage(new Login());
-
+            Plugin.InputKit.Shared.Controls.CheckBox.GlobalSetting.BorderColor = Color.Red;
+            Plugin.InputKit.Shared.Controls.CheckBox.GlobalSetting.Size = 36;
+            Plugin.InputKit.Shared.Controls.RadioButton.GlobalSetting.Color = Color.Red;
         }
 
         protected override void OnStart()
