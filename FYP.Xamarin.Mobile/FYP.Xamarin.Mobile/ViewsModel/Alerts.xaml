@@ -1,13 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Renders="clr-namespace:FYP.Xamarin.Mobile.Droid.Renders"
+             xmlns:forms1="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="FYP.Xamarin.Mobile.ViewsModel.Alerts"
              Title="Alerts">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+    <Renders:GradientLayout ColorsList="#1F2D44,#3A4A64" Mode="ToLeft">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <forms1:AnimationView x:Name="Loading_Icon" 
+                             AutoPlay="True" 
+                             Animation="40-loading.json" 
+                             Loop="True"
+                             IsVisible="False"
+                             IsEnabled="True"
+                             IsPlaying="True"
+                             VerticalOptions="FillAndExpand" 
+                             HorizontalOptions="FillAndExpand" 
+                             Grid.Row="0" 
+                             />
+            <ListView 
+                x:Name="AlertListView"
+                ItemsSource="{Binding Items}"
+                ItemTapped="AlertListView_ItemTapped"
+                CachingStrategy="RecycleElement"
+                HasUnevenRows="true"
+                Grid.Row="0">
+
+                <ListView.ItemTemplate BackgroundColor="Black">
+                    <DataTemplate>
+                        <ViewCell>
+                            <ContentView x:Name="listItemViewCell" BackgroundColor="#ffffff">
+                                <Grid  Margin="10" BackgroundColor="White">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="75" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image HeightRequest="75" WidthRequest="75" Source="scp_generic_icon.png" />
+                                    <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="{Binding label1}" FontSize="18" />
+                                        <Label Text="{Binding label2}" FontSize="Small" TextColor="Accent" />
+                                    </StackLayout>
+                                </Grid>
+                            </ContentView>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Renders:GradientLayout>
 </ContentPage>

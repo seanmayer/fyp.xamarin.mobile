@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Renders="clr-namespace:FYP.Xamarin.Mobile.Droid.Renders"
              x:Class="FYP.Xamarin.Mobile.Signup">
     <ContentPage.Content>
-        <Grid BackgroundColor="#3A4A64">
+        <Renders:GradientLayout ColorsList="#1F2D44,#3A4A64" Mode="ToLeft">
+        <Grid>
             <Grid Margin="20,100,20,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -25,26 +27,14 @@
                 <Entry Grid.Row="3" x:Name="confirmPassword" TextColor="White" Text="password" Placeholder="Confirm Password" IsPassword="True" PlaceholderColor="#A2A2A2" FontSize="16" />
                 <Entry Grid.Row="4" x:Name="stravaId" TextColor="White" Placeholder="Strava ID" PlaceholderColor="#A2A2A2" FontSize="16" Text="35193560"/>
                 <Entry Grid.Row="5" x:Name="stravaApiKey" TextColor="White" Placeholder="Strava API Key" Text="e8a14408cd001cb6a86607a21ff50bd42f0b76f8" PlaceholderColor="#A2A2A2" FontSize="16" />
-
-
+                
                 <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" Grid.Row="7">
                     <AbsoluteLayout>
-
-                            <Image Source="strava_btn.png" AbsoluteLayout.LayoutBounds="0.2,0.2,312,96" AbsoluteLayout.LayoutFlags="PositionProportional">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        Tapped="OnTapGestureRecognizerTapped"
-                                        NumberOfTapsRequired="1" />
-                            </Image.GestureRecognizers>
-                            </Image>
-
-
+                            <ImageButton Source="strava_btn.png" Clicked="SignupBtn"/>
                     </AbsoluteLayout>
-                    
                 </StackLayout>
-                
-
             </Grid>
         </Grid>
+        </Renders:GradientLayout>
     </ContentPage.Content>
 </ContentPage>

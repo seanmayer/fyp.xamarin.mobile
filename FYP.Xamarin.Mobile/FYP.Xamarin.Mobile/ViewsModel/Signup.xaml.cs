@@ -24,7 +24,7 @@ namespace FYP.Xamarin.Mobile
             credentialsServiceHandler = new CredentialsServiceHandler();
         }
 
-        private async void OnTapGestureRecognizerTapped(object sender, EventArgs e)
+        private async void SignupBtn(object sender, EventArgs e)
         {
 
             if (await athleteServiceHandler.EstablishConnection())

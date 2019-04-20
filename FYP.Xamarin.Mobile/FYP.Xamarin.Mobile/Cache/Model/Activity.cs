@@ -21,6 +21,18 @@ namespace FYP.Xamarin.Mobile.Database.Model
             this.timeZone = timeZone;
         }
 
+        public Activity(long activityId, long athleteId, string stravaid, string name, string startDate, string timeZone, string label1, string label2) : this(activityId, athleteId, stravaid, name, startDate, timeZone)
+        {
+            this.activityId = activityId;
+            this.athleteId = athleteId;
+            this.stravaid = stravaid;
+            this.name = name;
+            this.startDate = startDate;
+            this.timeZone = timeZone;
+            this.label1 = label1;
+            this.label2 = label2;
+        }
+
         [PrimaryKey]
         public long activityId { get; set; }
 

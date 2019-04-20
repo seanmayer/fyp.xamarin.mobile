@@ -9,7 +9,7 @@ namespace FYP.Xamarin.Mobile.Services.RequestFactory
         private static RequestFactory Instance = new RequestFactory();
 
         private readonly int SERVER_PORT = 8080;
-        private readonly string SERVER_IP  = "192.168.0.130";
+        private readonly string SERVER_IP  = "10.0.2.2";
         private readonly string _PROJECT_PACKAGE = "FYP.SCPSAA.Web.Services/";
         private readonly string _SERVICE_PACKAGE = "webresources/";
 

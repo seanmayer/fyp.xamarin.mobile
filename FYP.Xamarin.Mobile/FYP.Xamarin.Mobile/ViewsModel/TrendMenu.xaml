@@ -1,22 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Renders="clr-namespace:FYP.Xamarin.Mobile.Droid.Renders"
              x:Class="FYP.Xamarin.Mobile.ViewsModel.TrendMenu"
              Title="Trends">
     <ContentPage.Content>
-        <Grid x:Name="controlGrid" RowSpacing="15" ColumnSpacing="15">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="10" />
-                <RowDefinition Height="200" />
-                <RowDefinition Height="200" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <ImageButton Clicked="ImageButton_Clicked" Grid.Row="1" Grid.Column="0" Source="scp_energy.png" BackgroundColor="#EC5D5D"/>
-            <ImageButton Clicked="ImageButton_Clicked_1" Grid.Row="1" Grid.Column="1" Source="scp_cadence.png" BackgroundColor="#A5C2A3"/>
-            <ImageButton Clicked="ImageButton_Clicked_2" Grid.Row="2" Grid.Column="0" Source="scp_speed.png" BackgroundColor="#7EBDD1"/>
-        </Grid>
+        <Renders:GradientLayout ColorsList="#1F2D44,#3A4A64" Mode="ToLeft">
+            <Grid x:Name="controlGrid" RowSpacing="15" ColumnSpacing="15" Padding="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="160" />
+                    <RowDefinition Height="160" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <ImageButton Clicked="ImageButton_Clicked" Grid.Row="1" Grid.Column="0" Source="scp_energy.png" BackgroundColor="#EC5D5D" CornerRadius="10"/>
+                <ImageButton Clicked="ImageButton_Clicked_1" Grid.Row="1" Grid.Column="1" Source="scp_cadence.png" BackgroundColor="#A5C2A3" CornerRadius="10"/>
+                <ImageButton Clicked="ImageButton_Clicked_2" Grid.Row="2" Grid.Column="0" Source="scp_speed.png" BackgroundColor="#7EBDD1" CornerRadius="10"/>
+            </Grid>
+        </Renders:GradientLayout>
     </ContentPage.Content>
 </ContentPage>
