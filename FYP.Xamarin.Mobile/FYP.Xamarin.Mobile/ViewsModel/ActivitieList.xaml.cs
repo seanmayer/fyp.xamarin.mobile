@@ -182,7 +182,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
                 { 
                     ActivitySummary activitySummary = await activitySummaryCacheHandler.Find(activity.activityId);
                     activity.label1 = FormatterHandler.Instance.ConvertGMTToDDMMYYYY(activity.startDate);
-                    activity.label2 = FormatterHandler.Instance.ConvertEpochTimeTohhmmssfff(Convert.ToDouble(activitySummary.movingTime));
+                    activity.label2 = "Moving Time: " +FormatterHandler.Instance.ConvertEpochTimeTohhmmssfff(Convert.ToDouble(activitySummary.movingTime));
                     Items.Add(activity);
                 }
                 catch(Exception e)

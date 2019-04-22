@@ -11,6 +11,22 @@ namespace FYP.Xamarin.Mobile.Database.Model
         {
         }
 
+        public Activity(long activityId, string label1, string label2)
+        {
+            this.activityId = activityId;
+            this.label1 = label1;
+            this.label2 = label2;
+        }
+
+        public Activity(long activityId, string icon, string label1, string label2)
+        {
+            this.activityId = activityId;
+            this.icon = icon;
+            this.label1 = label1;
+            this.label2 = label2;
+        }
+
+
         public Activity(long activityId, long athleteId, string stravaid, string name, string startDate, string timeZone)
         {
             this.activityId = activityId;
@@ -47,6 +63,7 @@ namespace FYP.Xamarin.Mobile.Database.Model
 
         public string timeZone { get; set; }
 
+        public string icon { get; set; }
         public string label1 { get; set; }
         public string label2 { get; set; }
 

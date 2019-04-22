@@ -44,7 +44,9 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             UnitsLabel2.Text = LabelHandler.Instance.GetPeaksLabel(MenuSelection);
             UnitsLabel3.Text = LabelHandler.Instance.GetPeaksLabel(MenuSelection);
             UnitsLabel4.Text = LabelHandler.Instance.GetPeaksLabel(MenuSelection);
+            DataManipulatorHandler.CreateSingleton();
             Stream = StreamFactory.GetSingleton(Activity, AccessToken).CreateStream(MenuSelection);
+            string test = Stream.ToString();
             LoadChart(Stream);
             LoadLabels(Stream);
 
@@ -77,11 +79,11 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             {
                 MaxLabel.Text = loadStream.Values.Max().ToString();
                 TenSecLabel.Text = ErrorHandler.Instance.CheckStreamSequenceNotOutAbounds(
-                    ((int)DataManipulatorHandler.Instance.GetHighestSequenceXAverage(10, loadStream)));
+                    ((int)DataManipulatorHandler.Instance.GetHighestSequenceXAverage(10, await stream)));
                 TwentySecLabel.Text = ErrorHandler.Instance.CheckStreamSequenceNotOutAbounds(
-                    ((int)DataManipulatorHandler.Instance.GetHighestSequenceXAverage(20, loadStream)));
+                    ((int)DataManipulatorHandler.Instance.GetHighestSequenceXAverage(20, await stream)));
                 ThirtySecLabel.Text = ErrorHandler.Instance.CheckStreamSequenceNotOutAbounds(
-                    ((int)DataManipulatorHandler.Instance.GetHighestSequenceXAverage(30, loadStream)));
+                    ((int)DataManipulatorHandler.Instance.GetHighestSequenceXAverage(30, await stream)));
             }
             else
             {

@@ -32,17 +32,17 @@ namespace FYP.Xamarin.Mobile.ViewsModel
 
         private async void ImageButton_Clicked(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new TrendAnalysis(AthleteId, StravaId, AccessToken, buttonDefinition1));
+            await Navigation.PushAsync(new LeaderboardList(AthleteId, StravaId, AccessToken, buttonDefinition1));
         }
 
         private async void ImageButton_Clicked_1(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new TrendAnalysis(AthleteId, StravaId, AccessToken, buttonDefinition2));
+            await Navigation.PushAsync(new LeaderboardList(AthleteId, StravaId, AccessToken, buttonDefinition2));
         }
 
         private async void ImageButton_Clicked_2(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new TrendAnalysis(AthleteId, StravaId, AccessToken, buttonDefinition3));
+            await Navigation.PushAsync(new LeaderboardList(AthleteId, StravaId, AccessToken, buttonDefinition3));
         }
     }
 }
