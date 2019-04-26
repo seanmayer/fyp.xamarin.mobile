@@ -3,9 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Renders="clr-namespace:FYP.Xamarin.Mobile.Droid.Renders"
              xmlns:forms1="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+             xmlns:forms="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
              x:Class="FYP.Xamarin.Mobile.ViewsModel.Alerts"
              Title="Alerts">
     <Renders:GradientLayout ColorsList="#1F2D44,#3A4A64" Mode="ToLeft">
+        <AbsoluteLayout HorizontalOptions="End" VerticalOptions="End" Margin="20">
+
+                <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" >
+                    <input:Dropdown 
+                            TitleColor="White"
+                            AnnotationColor="Accent" 
+                            IsRequired="True" 
+                            BorderColor="White" 
+                            Color="White"
+                            BackgroundColor="#1F2D44"
+                            Placeholder="10 Seconds"
+                            x:Name="DropDownBox"
+                            TextColor="White"
+                            PlaceholderColor="White"
+                            SelectedItemChanged="DropDownBox_SelectedItemChanged"
+                            />
+                </StackLayout>
+
+            </AbsoluteLayout>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -22,31 +43,39 @@
                              HorizontalOptions="FillAndExpand" 
                              Grid.Row="0" 
                              />
+
+          
             <ListView 
                 x:Name="AlertListView"
-                ItemsSource="{Binding Items}"
+                ItemsSource="{Binding AlertItems}"
                 ItemTapped="AlertListView_ItemTapped"
                 CachingStrategy="RecycleElement"
                 HasUnevenRows="true"
-                Grid.Row="0">
+                Grid.Row="0" 
+                IsPullToRefreshEnabled="True">
 
                 <ListView.ItemTemplate BackgroundColor="Black">
                     <DataTemplate>
                         <ViewCell>
                             <ContentView x:Name="listItemViewCell" BackgroundColor="#ffffff">
-                                <Grid  Margin="10" BackgroundColor="White">
+                                
+                                <Grid  Margin="20" BackgroundColor="White">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="75" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Image HeightRequest="75" WidthRequest="75" Source="scp_generic_icon.png" />
-                                    <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                        <Label Text="{Binding label1}" FontSize="18" />
-                                        <Label Text="{Binding label2}" FontSize="Small" TextColor="Accent" />
+                                    
+                                    <StackLayout Grid.Row="0" Grid.Column="0"  VerticalOptions="Center">
+                                        <Image HeightRequest="30" WidthRequest="30" HorizontalOptions="Start" Source="scp_alert.png" />
+                                        <Label  Text="{Binding alertMessage}" FontSize="15" />
+                                        <forms:ChartView  Chart="{Binding ChartData}" HeightRequest="166" WidthRequest="200" Margin="0" IsVisible="True" />
                                     </StackLayout>
                                 </Grid>
+                                
                             </ContentView>
-
+                            
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

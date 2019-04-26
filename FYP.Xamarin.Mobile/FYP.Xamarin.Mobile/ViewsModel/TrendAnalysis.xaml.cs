@@ -1,10 +1,5 @@
 ﻿using FYP.Xamarin.Mobile.Algorithms;
-using FYP.Xamarin.Mobile.Database;
-using FYP.Xamarin.Mobile.Database.Model;
-using FYP.Xamarin.Mobile.Errors;
-using FYP.Xamarin.Mobile.Formatters;
 using FYP.Xamarin.Mobile.Renders;
-using FYP.Xamarin.Mobile.Streams.StreamFactory;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,7 +8,6 @@ using SkiaSharp;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Microcharts;
-using Plugin.InputKit.Shared.Controls;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
@@ -49,14 +43,14 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             
             Chart3.Chart = new LineChart()
             {
-                Entries = await LoadChart(DataManipulatorHandler.Instance.PeakAverage(MenuSelection,"December", Seconds)),
+                Entries = await LoadChart(DataManipulatorHandler.Instance.GetDailyPeakAverages(MenuSelection,"December", Seconds)),
                 LineMode = LineMode.Straight, LineSize = 8, PointMode = PointMode.Square, PointSize = 18, BackgroundColor = SKColors.White
             };
             Chart3.IsVisible = true;
             
             Chart4.Chart = new LineChart()
             {
-                Entries = await LoadChart(DataManipulatorHandler.Instance.PeakAverage(MenuSelection, "November", Seconds)),
+                Entries = await LoadChart(DataManipulatorHandler.Instance.GetDailyPeakAverages(MenuSelection, "November", Seconds)),
                 LineMode = LineMode.Straight, LineSize = 8, PointMode = PointMode.Square, PointSize = 18, BackgroundColor = SKColors.White
             };
             Chart4.IsVisible = true;

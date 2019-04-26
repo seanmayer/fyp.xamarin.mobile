@@ -28,7 +28,8 @@
             ItemTapped="Handle_ItemTapped"
             CachingStrategy="RecycleElement"
             HasUnevenRows="true"
-            Grid.Row="0">
+            Grid.Row="0"
+            IsPullToRefreshEnabled="True">
                 <ListView.GestureRecognizers>
                     <SwipeGestureRecognizer Direction="Down" Swiped="OnSwiped"/>
                 </ListView.GestureRecognizers>

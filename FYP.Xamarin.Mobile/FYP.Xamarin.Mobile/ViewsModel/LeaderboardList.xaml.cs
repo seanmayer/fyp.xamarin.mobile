@@ -51,7 +51,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         public async void LoadScreen()
         {
             DropDownBox.ItemsSource = DropDownBoxItems;
-            this.LeaderboardData =  await DataManipulatorHandler.Instance.PeakAverage(MenuSelection, "all", Seconds);
+            this.LeaderboardData =  await DataManipulatorHandler.Instance.GetDailyPeakAverages(MenuSelection, "all", Seconds);
             var leaderboardDataSorted = LeaderboardData.ToList();
           
 

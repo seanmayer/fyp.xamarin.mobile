@@ -81,7 +81,7 @@ namespace FYP.Xamarin.Mobile.Algorithms
             return TrendData;
         }
 
-        public async Task<Dictionary<long, int>> PeakAverage(string MenuSelection, string month, int Seconds)
+        public async Task<Dictionary<long, int>> GetDailyPeakAverages(string MenuSelection, string month, int Seconds)
         {
             Dictionary<long, int> TrendData = new Dictionary<long, int>();
             foreach (Activity activity in await activityCacheHandler.FindAll())
@@ -105,6 +105,8 @@ namespace FYP.Xamarin.Mobile.Algorithms
             }
             return TrendData;
         }
+
+
 
         public async Task<int> GetPeakMaxElementToAddAsync(Activity activity, string MenuSelection)
         {
@@ -160,6 +162,40 @@ namespace FYP.Xamarin.Mobile.Algorithms
             {
                 return -1;
             }
+        }
+
+        public async Task<Dictionary<long, string>> GetDatesNoDuplicates(string month)
+        {
+            Dictionary<long, string> dates = new Dictionary<long, string>();
+            int index = 0;
+            foreach (var activity in await activityCacheHandler.FindAll())
+            {
+                if (!(dates.ContainsValue(FormatterHandler.Instance.ConvertGMTToDDMMYYYY(activity.startDate))) && FormatterHandler.Instance.ConvertGMTToMonth(activity.startDate).Equals(month))
+                {
+                    dates.Add(index++, FormatterHandler.Instance.ConvertGMTToDDMMYYYY(activity.startDate));
+                }
+            }
+            return dates;
+        }
+
+        public async Task<Dictionary<string, int>> GetDailyTopPeakAverages(string node, string month, int seconds)
+        {
+            Dictionary<string, int> dailyTotals = new Dictionary<string, int>();
+            List<Activity> activitiyCache = await activityCacheHandler.FindAll();
+
+            foreach (var date in await GetDatesNoDuplicates(month))
+            {
+                Dictionary<long, int> temp = new Dictionary<long, int>();
+                foreach (var val in await GetDailyPeakAverages(node, month, seconds))
+                {
+                    if (FormatterHandler.Instance.ConvertGMTToDDMMYYYY(activitiyCache.Find(x => x.activityId == val.Key).startDate).Equals(date.Value))
+                    {
+                        temp.Add(val.Key, val.Value);
+                    }
+                }
+                dailyTotals.Add(date.Value, temp.Values.Max());
+            }
+            return dailyTotals;
         }
     }
 }

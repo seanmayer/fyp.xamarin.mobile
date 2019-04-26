@@ -36,7 +36,16 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             SyncCachedActivitySummaries();
             LoadAllCachedActivities();
 
-            
+            MyListView.RefreshCommand = new Command(() => {  
+                InitliseServiceAndCache(athleteId, stravaId, accessToken);
+                SyncCachedActivities();
+                SyncCachedActivitySummaries();
+                LoadAllCachedActivities();
+                Task.Delay(1000);
+                MyListView.IsRefreshing = false;
+            });
+
+
         }
 
         public void InitliseServiceAndCache(string athleteId, string stravaId, string accessToken)
