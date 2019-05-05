@@ -13,6 +13,7 @@ using System.Collections.Concurrent;
 using FYP.Xamarin.Mobile.Renders;
 using FYP.Xamarin.Mobile.Errors;
 using FYP.Xamarin.Mobile.Algorithms;
+using FYP.Xamarin.Mobile.Formatters;
 
 namespace FYP.Xamarin.Mobile.ViewsModel
 {
@@ -46,7 +47,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             UnitsLabel4.Text = LabelHandler.Instance.GetPeaksLabel(MenuSelection);
             DataManipulatorHandler.CreateSingleton();
             Stream = StreamFactory.GetSingleton(Activity, AccessToken).CreateStream(MenuSelection);
-            string test = Stream.ToString();
+            DateLabel.Text = FormatterHandler.Instance.ConvertGMTToDDMMYYYY(Activity.startDate);
             LoadChart(Stream);
             LoadLabels(Stream);
 

@@ -14,6 +14,7 @@ using FYP.Xamarin.Mobile.Prescriptive;
 using static FYP.Xamarin.Mobile.Prescriptive.AlertItem;
 using FYP.Xamarin.Mobile.Renders;
 using System.Text.RegularExpressions;
+using FYP.Xamarin.Mobile.Alerts;
 
 namespace FYP.Xamarin.Mobile.ViewsModel
 {
@@ -103,7 +104,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
 
             if (current.Value < previous.Value)
             {
-                AlertItems.Add(new AlertItem(node + " has dropped!")
+                AlertItems.Add(new AlertItem(node + " has dropped! \n" + "Decreased by " +DataManipulatorHandler.Instance.GetPercentageDifference(current.Value, previous.Value) + "%")
                 {
                     ChartData = new RadialGaugeChart()
                     {
@@ -129,21 +130,23 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             }
         }
 
+       
+
         private void AlertListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
 
-            if (((AlertItem)e.Item).alertMessage.Equals("Power has dropped!"))
+            if (((AlertItem)e.Item).alertMessage.Contains("Power has dropped!"))
             {
-                DisplayAlert("Possible actions", "- Reduce training volume \n- Reduce resistance \n- Reduce gear ratio", "OK");
+                AlertFactory.GetSingleton().CreateAlert(((AlertItem)e.Item).alertMessage);
             }
 
-            if (((AlertItem)e.Item).alertMessage.Equals("Cadence has dropped!"))
+            if (((AlertItem)e.Item).alertMessage.Contains("Cadence has dropped!"))
             {
-                DisplayAlert("Possible actions", "- Reduce training volume \n- Reduce resistance \n- Reduce gear ratio", "OK");
+                AlertFactory.GetSingleton().CreateAlert(((AlertItem)e.Item).alertMessage);
             }
-            if (((AlertItem)e.Item).alertMessage.Equals("Speed has dropped!"))
+            if (((AlertItem)e.Item).alertMessage.Contains("Speed has dropped!"))
             {
-                DisplayAlert("Possible actions", "- Reduce training volume \n- Reduce resistance \n- Reduce gear ratio", "OK");
+                AlertFactory.GetSingleton().CreateAlert(((AlertItem)e.Item).alertMessage);
             }
         }
 

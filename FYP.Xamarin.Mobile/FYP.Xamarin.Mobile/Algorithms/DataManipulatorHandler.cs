@@ -55,6 +55,11 @@ namespace FYP.Xamarin.Mobile.Algorithms
             get { return singletonInstance; }
         }
 
+        public decimal GetPercentageDifference(int V1, int V2)
+        {
+            return ((V2 - V1) / Math.Abs(V1)) * 100;
+        }
+
 
         public async Task<Dictionary<long, int>> PeakMax(string MenuSelection, string month)
         {

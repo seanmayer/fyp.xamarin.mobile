@@ -13,7 +13,7 @@ namespace FYP.Xamarin.Tests
             {
                 return ConfigureApp.Android
                     .ApkFile("Z:/Desktop/FYP.Xamarin.Mobile/fyp.xamarin.mobile/FYP.Xamarin.Mobile/FYP.Xamarin.Mobile.Android/bin/Release/com.companyname.FYP.Xamarin.Mobile.Android.apk")
-                    .DeviceSerial("3063QH3001014002")//3063QH3001014002//emulator-5554
+                    .DeviceSerial("emulator-5554")//3063QH3001014002//emulator-5554
                     .PreferIdeSettings()
                     .EnableLocalScreenshots()
                     .StartApp();

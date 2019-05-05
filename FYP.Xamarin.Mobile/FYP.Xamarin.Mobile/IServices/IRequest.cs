@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FYP.Xamarin.Mobile.Services.Requests
 {
-    interface IRequest<T>
+    public interface IRequest<T>
     {
         string MakeCreateRequest();
         string MakeGetRequest();

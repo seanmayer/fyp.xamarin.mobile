@@ -3,13 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:FYP.Xamarin.Mobile"
              xmlns:Renders="clr-namespace:FYP.Xamarin.Mobile.Droid.Renders"
-             x:Class="FYP.Xamarin.Mobile.Login">
+             x:Class="FYP.Xamarin.Mobile.Login"
+             >
 
 
     <MasterDetailPage.Master>
 
 
         <ContentPage  BackgroundColor="#616161" Title="Master">
+            
             <Grid BackgroundColor="Transparent">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="172" />

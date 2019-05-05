@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FYP.Xamarin.Mobile.Prescriptive;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -23,11 +24,14 @@ namespace FYP.Xamarin.Mobile.Alerts
         {
             switch (type)
             {
-                case "Power":
+                case "Power has dropped!":
+                    App.Current.MainPage.DisplayAlert("Possible actions", new LowPowerAlert().AlertMessage, "OK");
                     break;
-                case "Cadence":
+                case "Cadence has dropped!":
+                    App.Current.MainPage.DisplayAlert("Possible actions", new LowCadenceAlert().AlertMessage, "OK");
                     break;
-                case "Speed":
+                case "Speed has droppped!":
+                    App.Current.MainPage.DisplayAlert("Possible actions", new LowSpeedCadence().AlertMessage, "OK");
                     break;
                 default:
                     break;

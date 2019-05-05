@@ -21,6 +21,7 @@ namespace FYP.Xamarin.Mobile
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
+            
             credentialsCacheHandler = new CredentialsCacheHandler();
             athleteCacheHandler = new AthleteCacheHandler();
             IsGestureEnabled = false;
