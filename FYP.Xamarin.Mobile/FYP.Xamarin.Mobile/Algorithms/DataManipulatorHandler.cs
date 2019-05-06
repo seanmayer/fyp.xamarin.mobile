@@ -60,6 +60,23 @@ namespace FYP.Xamarin.Mobile.Algorithms
             return ((V2 - V1) / Math.Abs(V1)) * 100;
         }
 
+        public async Task<Dictionary<int, string>> GetDates(string MenuSelection)
+        {
+            Dictionary<int, string> dates = new Dictionary<int, string>();
+
+            int index = 0;
+                foreach (var activity in await activityCacheHandler.FindAll())
+                {
+                var date = FormatterHandler.Instance.ConvertGMTToMonth(activity.startDate);
+
+                    if (!(dates.ContainsValue(date)))
+                    {
+                        dates.Add(index++, date);
+                    }
+                }
+
+            return dates;
+        }
 
         public async Task<Dictionary<long, int>> PeakMax(string MenuSelection, string month)
         {
@@ -137,9 +154,42 @@ namespace FYP.Xamarin.Mobile.Algorithms
                 return Stream.Values.Max();
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return -1;
+            }
+        }
+
+        public async Task<Dictionary<int, long>> GetHighestSequenceXAverageStreamAsync(int Seconds, Task<Dictionary<int, long>> iStream)
+        {
+            try
+            {
+                Dictionary<int, long> Stream = await iStream;
+                Dictionary<int, long> Averages = new Dictionary<int, long>();
+
+                decimal numberOfGroups = Stream.Keys.Max() / Seconds;
+                int counter = 0;
+                int groupSize = Convert.ToInt32(Math.Ceiling(Stream.Count / numberOfGroups));
+
+                IEnumerable<IGrouping<int, KeyValuePair<int, long>>> groupedData = Stream.GroupBy(x => counter++ / groupSize);
+
+                foreach (var group in groupedData)
+                {
+                    if(group.Average(t => t.Value) == GetHighestSequenceXAverage(Seconds, Stream))
+                    {
+                        var list = group;
+                        var dictionary = list.ToDictionary(x => x.Key, x => x.Value);
+                        return dictionary;
+                    }
+                    
+                }
+
+                return null;
+
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
@@ -163,7 +213,7 @@ namespace FYP.Xamarin.Mobile.Algorithms
                 return Averages.Values.Max();
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return -1;
             }

@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 using Microcharts;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace FYP.Xamarin.Mobile.ViewsModel
 {
@@ -21,10 +22,11 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         private string AccessToken;
         private int Seconds;
         private ObservableCollection<string> Items = new ObservableCollection<string> { "1 Second", "10 Seconds", "20 Seconds", "30 Seconds" };
+        private Dictionary<int, string> AvailableDates;
 
         public TrendAnalysis (string athleteId, string stravaId, string accessToken, string menuSelection)
-		{
-			InitializeComponent ();
+        {
+            InitializeComponent ();
             DataManipulatorHandler.CreateSingleton(athleteId, accessToken);
             this.MenuSelection = menuSelection;
             this.AccessToken = accessToken;
@@ -36,25 +38,34 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         {
             Title = MenuSelection;
             DropDownBox.ItemsSource = Items;
+            this.AvailableDates = await DataManipulatorHandler.Instance.GetDates(MenuSelection);
             MonthTitle1.TextColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
             MonthTitle2.TextColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
             Highlight1.BackgroundColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
             Highlight2.BackgroundColor = ChartColourHandler.Instance.GetColorCustomStyles(MenuSelection);
-            
-            Chart3.Chart = new LineChart()
-            {
-                Entries = await LoadChart(DataManipulatorHandler.Instance.GetDailyPeakAverages(MenuSelection,"December", Seconds)),
-                LineMode = LineMode.Straight, LineSize = 8, PointMode = PointMode.Square, PointSize = 18, BackgroundColor = SKColors.White
-            };
-            Chart3.IsVisible = true;
-            
-            Chart4.Chart = new LineChart()
-            {
-                Entries = await LoadChart(DataManipulatorHandler.Instance.GetDailyPeakAverages(MenuSelection, "November", Seconds)),
-                LineMode = LineMode.Straight, LineSize = 8, PointMode = PointMode.Square, PointSize = 18, BackgroundColor = SKColors.White
-            };
-            Chart4.IsVisible = true;
 
+            MonthTitle1.Text = AvailableDates.Values.ElementAt(0) + "     ";
+            try
+            {
+                Chart3.Chart = new LineChart()
+                {
+                    Entries = await LoadChart(DataManipulatorHandler.Instance.GetDailyPeakAverages(MenuSelection, AvailableDates.Values.ElementAt(0), Seconds)),
+                    LineMode = LineMode.Straight, LineSize = 8, PointMode = PointMode.Square, PointSize = 18, BackgroundColor = SKColors.White
+                };
+                Chart3.IsVisible = true;
+            }
+            catch (Exception){ }
+            MonthTitle2.Text = AvailableDates.Values.ElementAt(1) + "     ";
+            try
+            {
+                Chart4.Chart = new LineChart()
+                {
+                    Entries = await LoadChart(DataManipulatorHandler.Instance.GetDailyPeakAverages(MenuSelection, AvailableDates.Values.ElementAt(1), Seconds)),
+                    LineMode = LineMode.Straight, LineSize = 8, PointMode = PointMode.Square, PointSize = 18, BackgroundColor = SKColors.White
+                };
+                Chart4.IsVisible = true;
+            }
+            catch (Exception) { }
         }
 
 

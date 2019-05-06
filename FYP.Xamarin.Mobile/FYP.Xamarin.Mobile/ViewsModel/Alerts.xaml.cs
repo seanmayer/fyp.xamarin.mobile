@@ -25,7 +25,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         public List<AlertItem> AlertItems;
         private int Seconds;
         private ObservableCollection<string> Items = new ObservableCollection<string> { "1 Second", "10 Seconds", "20 Seconds", "30 Seconds" };
-
+        private Dictionary<int, string> AvailableDates;
 
         public Alerts(string athleteId, string accessToken)
         {
@@ -70,9 +70,12 @@ namespace FYP.Xamarin.Mobile.ViewsModel
         {
             AlertListView.IsVisible = false;
             Loading_Icon.IsVisible = true;
-            await CheckForNewAlertsAsync("Power", "December", seconds);
-            await CheckForNewAlertsAsync("Speed", "December", seconds);
-            await CheckForNewAlertsAsync("Cadence", "December", seconds);
+            this.AvailableDates = await DataManipulatorHandler.Instance.GetDates("Power");
+            await CheckForNewAlertsAsync("Power", AvailableDates.Values.ElementAt(0), seconds);
+            this.AvailableDates = await DataManipulatorHandler.Instance.GetDates("Speed");
+            await CheckForNewAlertsAsync("Speed", AvailableDates.Values.ElementAt(0), seconds);
+            this.AvailableDates = await DataManipulatorHandler.Instance.GetDates("Cadence");
+            await CheckForNewAlertsAsync("Cadence", AvailableDates.Values.ElementAt(0), seconds);
             Loading_Icon.IsVisible = false;
             AlertListView.IsVisible = true;
             AlertListView.ItemsSource = AlertItems;

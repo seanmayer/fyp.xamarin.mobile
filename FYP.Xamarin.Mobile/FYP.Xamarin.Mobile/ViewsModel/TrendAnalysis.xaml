@@ -53,7 +53,7 @@
                              VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" 
                              Grid.Row="2" Grid.Column="0" HeightRequest="266"/>
                     <Label Grid.Row="0" Grid.Column="0" Text="    " XAlign ="End" />
-                    <Label Grid.Row="1" Grid.Column="0" x:Name="MonthTitle1" BackgroundColor="White" Text="December     " XAlign ="End" />
+                    <Label Grid.Row="1" Grid.Column="0" x:Name="MonthTitle1" BackgroundColor="White" Text="Loading     " XAlign ="End" />
 
                     <forms:ChartView  Grid.Row="2" Grid.Column="0" x:Name="Chart3" HeightRequest="166" Margin="-30" BackgroundColor="#1F2D44" IsVisible="False"/>
 
@@ -83,7 +83,7 @@
                              Grid.Row="2" Grid.Column="0" HeightRequest="266"/>
 
                     <Label Grid.Row="0" Grid.Column="0" Text="    " XAlign ="End" />
-                    <Label Grid.Row="1" Grid.Column="0" x:Name="MonthTitle2"  BackgroundColor="White" Text="November     " XAlign ="End" />
+                    <Label Grid.Row="1" Grid.Column="0" x:Name="MonthTitle2"  BackgroundColor="White" Text="Loading     " XAlign ="End" />
                     <forms:ChartView  Grid.Row="2" Grid.Column="0" x:Name="Chart4" HeightRequest="166" Margin="0" IsVisible="False"/>
                 </Grid>
 

@@ -35,7 +35,8 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             this.MenuSelection = menuSelection;
             this.AccessToken = accessToken;
             LoadScreen();
-            TenSecLabelTitle.GestureRecognizers.Add(new TapGestureRecognizer(){Command = new Command(() =>{Navigation.PushAsync(new Loading());})});
+            
+
         }
 
         public void LoadScreen()
@@ -47,11 +48,42 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             UnitsLabel4.Text = LabelHandler.Instance.GetPeaksLabel(MenuSelection);
             DataManipulatorHandler.CreateSingleton();
             Stream = StreamFactory.GetSingleton(Activity, AccessToken).CreateStream(MenuSelection);
-            DateLabel.Text = FormatterHandler.Instance.ConvertGMTToDDMMYYYY(Activity.startDate);
             LoadChart(Stream);
             LoadLabels(Stream);
-
+            LoadCommands();
         }
+
+        public void LoadCommands()
+        {
+            TenSecLabelTitle.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() =>
+                {
+                    Entries.Clear();
+                    LoadChartWithDetails(DataManipulatorHandler.Instance.GetHighestSequenceXAverageStreamAsync(10, Stream));
+
+                })
+            });
+            TwentySecLabelTitle.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() =>
+                {
+                    Entries.Clear();
+                    LoadChartWithDetails(DataManipulatorHandler.Instance.GetHighestSequenceXAverageStreamAsync(20, Stream));
+
+                })
+            });
+            ThirtySecLabelTitle.GestureRecognizers.Add(new TapGestureRecognizer()
+            {
+                Command = new Command(() =>
+                {
+                    Entries.Clear();
+                    LoadChartWithDetails(DataManipulatorHandler.Instance.GetHighestSequenceXAverageStreamAsync(30, Stream));
+
+                })
+            });
+        }
+
 
         public void ApplyStyles()
         {
@@ -62,6 +94,7 @@ namespace FYP.Xamarin.Mobile.ViewsModel
 
         public async void LoadChart(Task<Dictionary<int, long>> stream)
         {
+
             foreach (KeyValuePair<int, long> entry in await stream)
             {
                 Entries.Add(new Entry(entry.Value)
@@ -72,6 +105,24 @@ namespace FYP.Xamarin.Mobile.ViewsModel
             }
             Chart2.Chart = new LineChart() { Entries = Entries, LineMode = LineMode.Straight, LineSize = 1, PointMode = PointMode.None, PointSize = 1};
         }
+
+        public async void LoadChartWithDetails(Task<Dictionary<int, long>> stream)
+        {
+            int seconds = 1;
+            foreach (KeyValuePair<int, long> entry in await stream)
+            {
+                Entries.Add(new Entry(entry.Value)
+                {
+                    Color = ChartColourHandler.Instance.GetSKColorCustomStyles(MenuSelection),
+                    Label = seconds++.ToString(),
+                    TextColor = ChartColourHandler.Instance.GetSKColorCustomStyles(MenuSelection),
+                    ValueLabel = entry.Value.ToString()
+                });
+
+            }
+            Chart2.Chart = new LineChart() { Entries = Entries, LineMode = LineMode.Straight, LineSize = 1, PointMode = PointMode.None, PointSize = 1};
+        }
+
 
         public async void LoadLabels(Task<Dictionary<int, long>> stream)
         {
