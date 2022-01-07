@@ -1,7 +1,3 @@
-
-
-
-
 App Center Xamarin UI Tests:
 Prerequites 
 Install: NodeJS -> https://nodejs.org/en/
